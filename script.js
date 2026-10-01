@@ -35746,12 +35746,76 @@ function downloadText(name, rows) {
 	setTimeout(() => URL.revokeObjectURL(url), 1e3);
 }
 //#endregion
+//#region app/rainfall-client.ts
+var KEY = "waterrules-rainfall-api-base-v1";
+function rainfallBase() {
+	if (typeof window === "undefined") return "/api/";
+	try {
+		const saved = localStorage.getItem(KEY);
+		if (saved) return saved;
+	} catch {}
+	return document.querySelector("meta[name=\"waterrules-rainfall-api-base\"]")?.content || "/api/";
+}
+function validateRainfallBase(value) {
+	const base = typeof document === "undefined" ? "http://localhost/" : document.baseURI;
+	const url = new URL(value.trim() || "/api/", base);
+	const local = [
+		"localhost",
+		"127.0.0.1",
+		"[::1]"
+	].includes(url.hostname);
+	if (url.protocol !== "https:" && !(url.protocol === "http:" && local)) throw Error("Use an HTTPS rainfall service address, or http://127.0.0.1:8080/api/ for local testing.");
+	if (url.username || url.password || url.search || url.hash) throw Error("Use the service’s /api/ address without credentials, query parameters or a fragment.");
+	if (!url.pathname.endsWith("/")) url.pathname += "/";
+	return url.href;
+}
+function saveRainfallBase(value) {
+	const url = validateRainfallBase(value);
+	try {
+		if (value.trim()) localStorage.setItem(KEY, url);
+		else localStorage.removeItem(KEY);
+	} catch {
+		throw Error("This browser could not save the rainfall connection. Allow browser storage and try again.");
+	}
+}
+async function rainfallRequest(endpoint, params, signal, baseOverride) {
+	if (typeof location !== "undefined" && location.protocol === "file:" && baseOverride === void 0 && !/^https?:/.test(rainfallBase())) throw Error("Live rainfall needs a running service. Start the included server and open http://127.0.0.1:8080, or enter its address under Rainfall connection. CSV analysis remains available.");
+	const base = validateRainfallBase(baseOverride === void 0 ? rainfallBase() : baseOverride), url = new URL(endpoint, base);
+	url.search = new URLSearchParams(params).toString();
+	const timeout = AbortSignal.timeout(4e4), combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
+	let response;
+	try {
+		response = await fetch(url, {
+			signal: combined,
+			headers: { Accept: "application/json" },
+			credentials: "same-origin"
+		});
+	} catch (e) {
+		if (signal?.aborted) throw e;
+		if (timeout.aborted) throw Error("The rainfall service timed out. Retry or use the official source view.");
+		throw Error("The rainfall service could not be reached. Check Rainfall connection, HTTPS and the server’s cross-origin settings. CSV analysis remains available.");
+	}
+	const text = await response.text();
+	if (text.length > 8e6) throw Error("The rainfall response is too large. Choose a shorter period.");
+	if (/^\s*</.test(text) || response.headers.get("content-type")?.includes("text/html")) throw Error("The rainfall service returned a web page instead of data. This host may be missing the rainfall server or requiring sign-in. Open Rainfall connection to check the service address. Static hosting alone cannot serve live rainfall; CSV analysis remains available.");
+	let body;
+	try {
+		body = JSON.parse(text);
+	} catch {
+		throw Error("The rainfall service returned an unreadable response. Retry or check Rainfall connection.");
+	}
+	if (!body || typeof body !== "object" || Array.isArray(body)) throw Error("The rainfall service returned an unexpected data format. Check Rainfall connection.");
+	const result = body;
+	if (!response.ok || typeof result.error === "string") throw Error(typeof result.error === "string" ? result.error : `The rainfall service returned HTTP ${response.status}. Retry or check Rainfall connection.`);
+	return body;
+}
+//#endregion
 //#region app/southland-weather.tsx
 var PORTAL = "https://envdata.es.govt.nz/";
 async function api(params, signal) {
-	const r = await fetch("/api/rainfall?" + new URLSearchParams(params), { signal });
-	const body = await r.json();
-	if (!r.ok) throw new Error(body.error || "Could not load rainfall data.");
+	const body = await rainfallRequest("rainfall", params, signal);
+	if (typeof body.retrievedAt !== "string" || (params.action === "history" ? typeof body.image !== "string" : !body.data)) throw Error("The rainfall service returned incomplete data. Check Rainfall connection.");
+	if (params.action === "sites" && !Array.isArray(body.data.sites)) throw Error("The rainfall service returned no station list. Check Rainfall connection.");
 	return body;
 }
 function SouthlandWeather() {
@@ -36447,9 +36511,8 @@ var SOURCES = [
 	}
 ];
 async function regional(params, signal) {
-	const r = await fetch("/api/regional-rainfall?" + new URLSearchParams(params), { signal });
-	const b = await r.json();
-	if (!r.ok) throw Error(b.error || "Unable to load rainfall data.");
+	const b = await rainfallRequest("regional-rainfall", params, signal);
+	if (params.action === "sites" && !Array.isArray(b.sites) || params.action === "series" && !Array.isArray(b.rows)) throw Error("The rainfall service returned incomplete records. Check Rainfall connection.");
 	return b;
 }
 function SourceLink({ source, label = "Open official rainfall data" }) {
@@ -37093,71 +37156,170 @@ function ProviderView({ source }) {
 		]
 	});
 }
+function RainfallConnection({ onApply }) {
+	const [base, setBase] = (0, import_react.useState)(""), [message, setMessage] = (0, import_react.useState)(""), [error, setError] = (0, import_react.useState)(""), [busy, setBusy] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => setBase(rainfallBase()), []);
+	function apply() {
+		try {
+			saveRainfallBase(base);
+			setError("");
+			setMessage("Connection saved in this browser. Station lists are refreshing.");
+			onApply();
+		} catch (e) {
+			setMessage("");
+			setError(e.message);
+		}
+	}
+	async function test() {
+		setBusy(true);
+		setError("");
+		setMessage("");
+		try {
+			const responses = await Promise.all([rainfallRequest("rainfall", { action: "sites" }, void 0, base), rainfallRequest("regional-rainfall", {
+				provider: "wellington",
+				action: "sites"
+			}, void 0, base)]);
+			if (!Array.isArray(responses[0].data?.sites) || !Array.isArray(responses[1].sites)) throw Error("The service did not return the expected station lists.");
+			setMessage("Both rainfall connections returned station data. Apply the connection to use it.");
+		} catch (e) {
+			setError(e.message);
+		} finally {
+			setBusy(false);
+		}
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+		className: "weather-provenance",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Rainfall connection" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Live station readings need the rainfall service included in the website package. If the website is hosted on GitHub Pages or another static host, run the service on a server and enter its HTTPS address here. The service address ends with /api/. Saved settings apply to this browser." }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { children: ["Rainfall service address", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+				"aria-label": "Rainfall service address",
+				type: "text",
+				value: base,
+				onChange: (e) => {
+					setBase(e.target.value);
+					setError("");
+					setMessage("");
+				}
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "weather-import-links",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						className: "tool-secondary",
+						disabled: busy,
+						onClick: test,
+						children: busy ? "Checking connections…" : "Test rainfall connection"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						className: "tool-primary",
+						disabled: busy,
+						onClick: apply,
+						children: "Apply connection & retry"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						className: "tool-secondary",
+						disabled: busy,
+						onClick: () => {
+							setBase("");
+							try {
+								saveRainfallBase("");
+								setError("");
+								setMessage("Using this website’s rainfall service.");
+								onApply();
+							} catch (e) {
+								setError(e.message);
+							}
+						},
+						children: "Use this website’s service"
+					})
+				]
+			}),
+			message && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				role: "status",
+				children: message
+			}),
+			error && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "weather-error",
+				role: "alert",
+				children: error
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "weather-meta",
+				children: "For local use: run node server.mjs inside the extracted website folder, then open http://127.0.0.1:8080. CSV analysis and official source views remain available when a connection is unavailable."
+			})
+		]
+	});
+}
 function Weather() {
-	const [id, setId] = (0, import_react.useState)("southland");
+	const [id, setId] = (0, import_react.useState)("southland"), [connectionVersion, setConnectionVersion] = (0, import_react.useState)(0);
 	const source = SOURCES.find((s) => s.id === id);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "weather-hub",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "weather-hub-heading",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "eyebrow",
-					children: "CATCHMENT CONTEXT · AOTEAROA NEW ZEALAND"
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { children: "Weather & rainfall" }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "lead",
-					children: "Choose a region or national source. Review published observations, explore rainfall maps, or analyse downloaded station records."
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "weather-hub-legend",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudRain, { size: 15 }), " Station observations"] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { size: 15 }), " Maps & climate context"] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { size: 15 }), " Downloaded records"] })
-					]
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "weather-hub-layout",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
-				className: "weather-sources",
-				"aria-label": "Rainfall sources",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "rail-label",
-					children: "CHOOSE A DATA SOURCE"
-				}), SOURCES.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-					onClick: () => setId(s.id),
-					"aria-pressed": id === s.id,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: s.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: s.access })]
-				}, s.id))]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "weather-work-area",
-				children: [id === "southland" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SouthlandWeather, {}) : [
-					"wellington",
-					"otago",
-					"canterbury"
-				].includes(id) ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegionalStations, { source }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProviderView, { source }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
-					className: "weather-provenance",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Source, access & data use" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: source.agency }),
-							" · ",
-							source.kind
-						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-							href: source.url,
-							target: "_blank",
-							rel: "noreferrer",
-							children: [source.url, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 13 })]
-						}) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Observations may be provisional, delayed, incomplete or revised. Retain source dates, station identity and quality flags. Rainfall supports review of runoff, turbidity and treatment controls; it does not establish drinking-water compliance. Follow the provider’s terms for downloaded data." })
-					]
-				})]
-			}, id)]
-		})]
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "weather-hub-heading",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "eyebrow",
+						children: "CATCHMENT CONTEXT · AOTEAROA NEW ZEALAND"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { children: "Weather & rainfall" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "lead",
+						children: "Choose a region or national source. Review published observations, explore rainfall maps, or analyse downloaded station records."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "weather-hub-legend",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudRain, { size: 15 }), " Station observations"] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { size: 15 }), " Maps & climate context"] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { size: 15 }), " Downloaded records"] })
+						]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RainfallConnection, { onApply: () => setConnectionVersion((v) => v + 1) }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "weather-hub-layout",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+					className: "weather-sources",
+					"aria-label": "Rainfall sources",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "rail-label",
+						children: "CHOOSE A DATA SOURCE"
+					}), SOURCES.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						onClick: () => setId(s.id),
+						"aria-pressed": id === s.id,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: s.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: s.access })]
+					}, s.id))]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "weather-work-area",
+					children: [id === "southland" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SouthlandWeather, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RainImport, { source })] }) : [
+						"wellington",
+						"otago",
+						"canterbury"
+					].includes(id) ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegionalStations, { source }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProviderView, { source }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+						className: "weather-provenance",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Source, access & data use" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: source.agency }),
+								" · ",
+								source.kind
+							] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+								href: source.url,
+								target: "_blank",
+								rel: "noreferrer",
+								children: [source.url, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 13 })]
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Observations may be provisional, delayed, incomplete or revised. Retain source dates, station identity and quality flags. Rainfall supports review of runoff, turbidity and treatment controls; it does not establish drinking-water compliance. Follow the provider’s terms for downloaded data." })
+						]
+					})]
+				}, `${id}-${connectionVersion}`)]
+			})
+		]
 	});
 }
 //#endregion
