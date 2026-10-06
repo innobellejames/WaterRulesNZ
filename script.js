@@ -10167,21 +10167,6 @@
 	* This source code is licensed under the ISC license.
 	* See the LICENSE file in the root directory of this source tree.
 	*/
-	var Eye = createLucideIcon("eye", [["path", {
-		d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
-		key: "1nclc0"
-	}], ["circle", {
-		cx: "12",
-		cy: "12",
-		r: "3",
-		key: "1v7zrd"
-	}]]);
-	/**
-	* @license lucide-react v1.31.0 - ISC
-	*
-	* This source code is licensed under the ISC license.
-	* See the LICENSE file in the root directory of this source tree.
-	*/
 	var FileText = createLucideIcon("file-text", [
 		["path", {
 			d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
@@ -41229,99 +41214,7 @@
 	//#endregion
 	//#region app/site-footer.tsx
 	var LINKEDIN = "https://www.linkedin.com/in/belle-james-68676590/";
-	var pageLoad = null;
-	var viewId = null;
-	async function registerView() {
-		viewId ??= globalThis.crypto?.randomUUID?.() || `${Date.now().toString(16)}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
-		return checkedCount(await siteRequest("page-views", {
-			method: "POST",
-			headers: { "X-WaterRules-View-Id": viewId }
-		}));
-	}
-	function checkedCount(body) {
-		if (!Number.isSafeInteger(body.views) || body.views < 0) throw Error("Invalid page-view count");
-		return body;
-	}
-	async function readViews() {
-		return checkedCount(await siteRequest("page-views", {
-			method: "GET",
-			cache: "no-store"
-		}));
-	}
-	function SiteFooter({ onTerms, onContact, onConnection, onGuide }) {
-		const [count, setCount] = (0, import_react.useState)(null), [failed, setFailed] = (0, import_react.useState)(false), [loading, setLoading] = (0, import_react.useState)(true);
-		function load() {
-			setLoading(true);
-			pageLoad ??= registerView();
-			pageLoad.then(() => readViews()).then((v) => {
-				setCount(v);
-				setFailed(false);
-				setLoading(false);
-			}).catch(() => {
-				pageLoad = null;
-				setFailed(true);
-				setLoading(false);
-			});
-		}
-		(0, import_react.useEffect)(() => {
-			let active = true, busy = false, registered = false;
-			let timer;
-			let tries = 0;
-			async function refresh() {
-				if (!active || busy) return;
-				busy = true;
-				setLoading(true);
-				try {
-					if (!registered) {
-						pageLoad ??= registerView();
-						await pageLoad;
-						registered = true;
-					}
-					const v = await readViews();
-					if (active) {
-						setCount(v);
-						setFailed(false);
-						tries = 0;
-					}
-				} catch {
-					pageLoad = null;
-					if (active) {
-						setFailed(true);
-						if (++tries < 3) timer = setTimeout(refresh, tries * 2500);
-					}
-				} finally {
-					busy = false;
-					if (active) setLoading(false);
-				}
-			}
-			function reconnect() {
-				tries = 0;
-				registered = false;
-				pageLoad = null;
-				if (timer) clearTimeout(timer);
-				refresh();
-			}
-			function visible() {
-				if (document.visibilityState === "visible") refresh();
-			}
-			refresh();
-			const interval = setInterval(() => {
-				if (document.visibilityState === "visible") refresh();
-			}, 6e4);
-			window.addEventListener("online", reconnect);
-			window.addEventListener("waterrules-service-changed", reconnect);
-			window.addEventListener("focus", visible);
-			document.addEventListener("visibilitychange", visible);
-			return () => {
-				active = false;
-				if (timer) clearTimeout(timer);
-				clearInterval(interval);
-				window.removeEventListener("online", reconnect);
-				window.removeEventListener("waterrules-service-changed", reconnect);
-				window.removeEventListener("focus", visible);
-				document.removeEventListener("visibilitychange", visible);
-			};
-		}, []);
+	function SiteFooter({ onTerms, onContact, onGuide }) {
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
 			className: "site-footer contact-footer",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -41369,45 +41262,9 @@
 				]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "footer-bottom",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "© Water Rules NZ 2026. All rights reserved." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "© Water Rules NZ 2026. All rights reserved." }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "footer-bottom-actions",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: `footer-counter ${failed ? "is-local" : ""}`,
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "footer-counter-value",
-								role: "status",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { size: 18 }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Total page views" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: count ? count.views.toLocaleString("en-NZ") : "—" })] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
-										className: "counter-badge",
-										children: loading ? "Updating…" : failed ? count ? "Last known total" : "Unavailable" : "Across all visitors"
-									})
-								]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "footer-counter-note",
-								children: loading ? "Connecting to the shared counter…" : failed ? count ? "The counter is temporarily unavailable. Showing the last shared total received." : "Connect the page-view service to display the total across all visitors." : `Page loads across all visitors and browsers, including refreshes; not unique people.${count?.startedAt ? ` Since ${new Date(count.startedAt).toLocaleDateString("en-NZ", { timeZone: "Pacific/Auckland" })}.` : ""}`
-							}),
-							failed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "footer-counter-actions",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									disabled: loading,
-									onClick: () => {
-										pageLoad = null;
-										load();
-									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { size: 14 }), " Retry count"]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: onConnection,
-									children: "Connection settings"
-								})]
-							})
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
 						className: "footer-help-links",
 						"aria-label": "Footer help",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
@@ -41419,7 +41276,7 @@
 							onClick: onTerms,
 							children: "Terms of Use"
 						})]
-					})]
+					})
 				})]
 			})]
 		});
@@ -43466,8 +43323,7 @@
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SiteFooter, {
 					onGuide: () => setTab("guide"),
 					onTerms: () => setTab("terms"),
-					onContact: () => setTab("issue"),
-					onConnection: () => setTab("weather")
+					onContact: () => setTab("issue")
 				})
 			]
 		});
