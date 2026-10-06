@@ -30,7 +30,7 @@ createServer(async(req,res)=>{
   if(isApi){
    if(origin&&origin!==publicOrigin&&!allowed.includes(origin)){json({error:'Submit requests from this website.'},403);return;}
    if(origin){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');}
-   res.setHeader('Access-Control-Allow-Methods','GET, HEAD, POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Accept, Content-Type');res.setHeader('X-Content-Type-Options','nosniff');
+   res.setHeader('Access-Control-Allow-Methods','GET, HEAD, POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Accept, Content-Type, X-WaterRules-View-Id');res.setHeader('X-Content-Type-Options','nosniff');
    if(req.method==='OPTIONS'){res.writeHead(204);res.end();return;}
    if(path==='/api/issues'){
     if(req.method!=='POST'){json({error:'Method not allowed'},405);return;}
@@ -39,7 +39,7 @@ createServer(async(req,res)=>{
     const visitor=createHash('sha256').update(String(ip)).digest('hex');
     await respond(await handleIssue(new Request(url,{method:'POST',headers:{'Content-Type':String(req.headers['content-type']||'')},body:text}),visitor));return;
    }
-   if(path==='/api/page-views'){await respond(await handlePageViews(req.method));return;}
+   if(path==='/api/page-views'){await respond(await handlePageViews(req.method,req.headers['x-waterrules-view-id']));return;}
    if(!['GET','HEAD'].includes(req.method)){json({error:'Method not allowed'},405);return;}
    if(path==='/api/health'){json({ok:true,services:['rainfall','regional-rainfall','page-views','issues']},200);return;}
    if(path==='/api/rainfall'||path==='/api/regional-rainfall'){await respond(await (path==='/api/rainfall'?handleRainfall:handleRegionalRainfall)(new Request(url)));return;}
