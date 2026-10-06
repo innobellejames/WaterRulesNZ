@@ -18,7 +18,7 @@ export async function handleIssue(request,visitor){
   if(!stored){if(reports.filter(r=>r.visitor===visitor&&Date.parse(r.createdAt)>Date.now()-3600000).length>=5)return reply({error:'You have submitted several reports. Please try again in an hour.'},429);stored={...issue,visitor,delivery:'pending'};reports.push(stored);}
   async function save(){await mkdir(folder,{recursive:true});await writeFile(file+'.tmp',JSON.stringify(reports)+'\n',{mode:0o600});await rename(file+'.tmp',file);}
   await save();
-  try{if(await deliverIssue(stored,{key:process.env.ISSUE_MAIL_API_KEY,from:process.env.ISSUE_MAIL_FROM,to:process.env.ISSUE_REPORT_TO})){stored.delivery='sent';await save();}}catch{console.error('Issue mail delivery pending',stored.id);}
+  try{stored.delivery=await deliverIssue(stored,{key:process.env.ISSUE_MAIL_API_KEY,from:process.env.ISSUE_MAIL_FROM,to:process.env.ISSUE_REPORT_TO,provider:process.env.ISSUE_MAIL_PROVIDER,origin:process.env.PUBLIC_ORIGIN||new URL(request.url).origin});await save();}catch{console.error('Issue mail delivery pending',stored.id);}
   return reply({id:stored.id,delivery:stored.delivery},stored.delivery==='sent'?200:202);
  });queue=operation.catch(()=>{});
  try{return await operation;}catch{return reply({error:'The report could not be saved. Please retry or download a copy.'},503);}
