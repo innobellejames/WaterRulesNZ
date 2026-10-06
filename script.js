@@ -10033,6 +10033,19 @@
 	* This source code is licensed under the ISC license.
 	* See the LICENSE file in the root directory of this source tree.
 	*/
+	var ArrowUpRight = createLucideIcon("arrow-up-right", [["path", {
+		d: "M7 7h10v10",
+		key: "1tivn9"
+	}], ["path", {
+		d: "M7 17 17 7",
+		key: "1vkiza"
+	}]]);
+	/**
+	* @license lucide-react v1.31.0 - ISC
+	*
+	* This source code is licensed under the ISC license.
+	* See the LICENSE file in the root directory of this source tree.
+	*/
 	var ArrowUp = createLucideIcon("arrow-up", [["path", {
 		d: "m5 12 7-7 7 7",
 		key: "hav0vg"
@@ -11539,7 +11552,7 @@
 	//#region app/answer-engine.ts
 	var R$1 = "https://www.taumataarowai.govt.nz/assets/Drinking-Water-Supplier/Drinking-Water-Quality-Assurance-Rules-2022-Revised-2024.pdf";
 	var ACT = "https://www.legislation.govt.nz/act/public/2021/36/en/latest/";
-	var act = (section) => `${ACT}#${{
+	var act$1 = (section) => `${ACT}#${{
 		part2: "LMS374792",
 		21: "LMS374692",
 		22: "LMS374693",
@@ -11558,7 +11571,7 @@
 		reference,
 		url
 	});
-	var rules = (page) => `${R$1}#page=${page}`;
+	var rules$1 = (page) => `${R$1}#page=${page}`;
 	function category(q, selected) {
 		const n = Number(q.match(/\b(?:serving|serve|for|to)\s+(\d{2,6})\s+people\b/i)?.[1] || q.match(/\b(\d{2,6})\s+people\b/)?.[1] || 0);
 		if (n > 0) return n <= 25 ? "very-small" : n <= 100 ? "small" : n <= 500 ? "medium" : "large";
@@ -11594,7 +11607,7 @@
 			rows: [
 				row("Regulator's role", "The Commission describes its water role as economic regulation and consumer protection.", "Commerce Commission · Our role", "https://www.comcom.govt.nz/regulated-industries/water-wai/our-role/"),
 				row("Information disclosure", "Regulated suppliers publicly disclose specified performance information under the applicable determination and compliance calendar.", "Commerce Commission · Information Disclosure", "https://www.comcom.govt.nz/regulated-industries/projects/economic-regulation-of-water-services-information-disclosure/"),
-				row("Water quality duties", "Safe drinking water and quality assurance requirements sit under the Water Services Act, Standards and Taumata Arowai instruments.", "Water Services Act · Part 2", act("part2"))
+				row("Water quality duties", "Safe drinking water and quality assurance requirements sit under the Water Services Act, Standards and Taumata Arowai instruments.", "Water Services Act · Part 2", act$1("part2"))
 			]
 		};
 		if (/water new zealand|waternz|industry resource|technical resource|professional training/.test(q)) return {
@@ -11632,7 +11645,7 @@
 			rows: [
 				row("Methods reference", "The 24th edition covers biological, chemical and physical water analyses. The full publication is accessed through the publishers.", "Standard Methods · publisher", "https://www.wef.org/publications/standard-methods/"),
 				row("Open analytical guidance", "WHO's latest Guidelines include an analytical methods and achievability annex as a publisher-hosted PDF.", "WHO Guidelines 2026 · Annex 4", "https://cdn.who.int/media/docs/default-source/wash-documents/water-safety-and-quality/dwq-guidelines-4/gdwq_4ed_with_third-addenda_ann-4-analytical-methods.pdf?sfvrsn=1cfadac7_5"),
-				row("NZ laboratory requirement", "Rule G8 requires an IANZ-accredited laboratory for the type of analysis used to demonstrate compliance, with samples collected to laboratory instructions.", "Quality Assurance Rules · G8, p. 16", rules(16)),
+				row("NZ laboratory requirement", "Rule G8 requires an IANZ-accredited laboratory for the type of analysis used to demonstrate compliance, with samples collected to laboratory instructions.", "Quality Assurance Rules · G8, p. 16", rules$1(16)),
 				row("Find a laboratory", "Taumata Arowai explains how suppliers can use an accredited laboratory.", "Taumata Arowai · accredited laboratories", "https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/how-to-guidance/using-an-accredited-laboratory-to-test-your-drinking-water")
 			]
 		};
@@ -11640,11 +11653,11 @@
 			const rows = [];
 			const detected = /detect|positive|found|present|exceed|unsafe|boil|risk|danger|health|cause|indicator|contamin/.test(q);
 			if (detected) rows.push(row("Protect consumers", "A positive E. coli result in drinking water indicates faecal contamination may have occurred. Act quickly, prevent unboiled consumption, issue a Boil Water notice where supplying others and follow the registered supplier's notification duties.", "Taumata Arowai · E. coli response", "https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/how-to-guidance/ecoli-response"), row("Investigate and correct", "Check source, treatment, storage and distribution; a repeat sample alone does not make the water safe. Follow the regulator's response and clearance guidance for your supply.", "Taumata Arowai · response guidance", "https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/how-to-guidance/ecoli-response"));
-			if (type === "very-small") rows.push(row("Very small community", "Monitor drinking water for E. coli and total coliforms at least every six months.", "VSC.1 · p. 20", rules(20)));
-			else if (type === "small") rows.push(row("Source water", "For surface or groundwater and roof sources, monitor E. coli and total coliforms at least every three months.", "S1.1–S1.2 · p. 21", rules(21)), row("After treatment", "Monitor E. coli and total coliforms at least every three months.", "T1.1 · p. 23", rules(23)), row("Distribution zone", "Monitor E. coli and total coliforms at least every three months.", "D1.1 · p. 25", rules(25)));
-			else if (type === "medium") rows.push(row("Source water", "Monitor E. coli and total coliforms at least monthly for surface, groundwater and roof sources.", "S2.1–S2.2 · p. 26", rules(26)), row("After treatment", "Monitor E. coli and total coliforms at least monthly.", "T2.1 · p. 28", rules(28)), row("Each distribution zone", "Monitor E. coli and total coliforms at least monthly.", "D2.1 · p. 32", rules(32)));
-			else if (type === "large") rows.push(row("Source water", "Monitor E. coli and total coliforms twice per month at each abstraction point, subject to the source rules' notes.", "S3 Table 16 · p. 37", rules(37)), row("Each distribution zone", "Monitor E. coli and total coliforms at the population-based frequencies in Table 39.", "D3.29 and Table 39 · pp. 73–74", rules(74)));
-			else rows.push(row("Frequency depends on supply", "Very small, level 1, level 2 and level 3 supplies have different sampling frequencies; identify the applicable module first.", "Table 2 · p. 10", rules(10)));
+			if (type === "very-small") rows.push(row("Very small community", "Monitor drinking water for E. coli and total coliforms at least every six months.", "VSC.1 · p. 20", rules$1(20)));
+			else if (type === "small") rows.push(row("Source water", "For surface or groundwater and roof sources, monitor E. coli and total coliforms at least every three months.", "S1.1–S1.2 · p. 21", rules$1(21)), row("After treatment", "Monitor E. coli and total coliforms at least every three months.", "T1.1 · p. 23", rules$1(23)), row("Distribution zone", "Monitor E. coli and total coliforms at least every three months.", "D1.1 · p. 25", rules$1(25)));
+			else if (type === "medium") rows.push(row("Source water", "Monitor E. coli and total coliforms at least monthly for surface, groundwater and roof sources.", "S2.1–S2.2 · p. 26", rules$1(26)), row("After treatment", "Monitor E. coli and total coliforms at least monthly.", "T2.1 · p. 28", rules$1(28)), row("Each distribution zone", "Monitor E. coli and total coliforms at least monthly.", "D2.1 · p. 32", rules$1(32)));
+			else if (type === "large") rows.push(row("Source water", "Monitor E. coli and total coliforms twice per month at each abstraction point, subject to the source rules' notes.", "S3 Table 16 · p. 37", rules$1(37)), row("Each distribution zone", "Monitor E. coli and total coliforms at the population-based frequencies in Table 39.", "D3.29 and Table 39 · pp. 73–74", rules$1(74)));
+			else rows.push(row("Frequency depends on supply", "Very small, level 1, level 2 and level 3 supplies have different sampling frequencies; identify the applicable module first.", "Table 2 · p. 10", rules$1(10)));
 			rows.push(row("Health limit", "The E. coli MAV is less than 1 in a 100 mL sample.", "Drinking Water Standards · Schedule, Table 1", S));
 			return {
 				summary: detected ? "E. coli detected in drinking water calls for immediate protection and investigation. It is an indicator of faecal contamination and possible pathogens; the legal MAV is less than 1 in 100 mL." : type === "unsure" ? "E. coli monitoring frequency depends on the supply category and sampling location." : `For this ${type.replace("-", " ")} supply, the relevant source, treatment and distribution monitoring requirements are set out below.`,
@@ -11654,9 +11667,9 @@
 		}
 		if (/chlorine|\bfac\b|residual/.test(q)) {
 			const rows = [];
-			if (type === "medium") rows.push(row("At treatment plant", "While in production, FAC must be at least 0.5 mg/L for a level 2 treatment plant (self-supplied building exception applies).", "T2.6 · p. 29", rules(29)), row("In each distribution zone", "FAC must be at least 0.2 mg/L in 80% of samples and no less than 0.1 mg/L at all times.", "D2.7 · p. 33", rules(33)));
-			else if (type === "large") rows.push(row("In distribution", "At least 0.2 mg/L in 85% of samples or time; the remaining 15% must be greater than 0.1 mg/L.", "D3.19 · p. 69", rules(69)), row("Sampling", "FAC sample frequency depends on zone population, or qualifying continuous monitoring may be used.", "D3.20, Tables 35–36 · pp. 70–71", rules(71)));
-			else rows.push(row("Identify the rule level", "Level 2 and level 3 distribution rules set different residual criteria. First confirm the supply category and any applicable solution or exemption.", "Table 2 · p. 10", rules(10)), row("Level 2 example", "At least 0.2 mg/L in 80% of samples and no less than 0.1 mg/L at all times.", "D2.7 · p. 33", rules(33)), row("Level 3 example", "At least 0.2 mg/L in 85% of samples or time, with the remainder greater than 0.1 mg/L.", "D3.19 · p. 69", rules(69)));
+			if (type === "medium") rows.push(row("At treatment plant", "While in production, FAC must be at least 0.5 mg/L for a level 2 treatment plant (self-supplied building exception applies).", "T2.6 · p. 29", rules$1(29)), row("In each distribution zone", "FAC must be at least 0.2 mg/L in 80% of samples and no less than 0.1 mg/L at all times.", "D2.7 · p. 33", rules$1(33)));
+			else if (type === "large") rows.push(row("In distribution", "At least 0.2 mg/L in 85% of samples or time; the remaining 15% must be greater than 0.1 mg/L.", "D3.19 · p. 69", rules$1(69)), row("Sampling", "FAC sample frequency depends on zone population, or qualifying continuous monitoring may be used.", "D3.20, Tables 35–36 · pp. 70–71", rules$1(71)));
+			else rows.push(row("Identify the rule level", "Level 2 and level 3 distribution rules set different residual criteria. First confirm the supply category and any applicable solution or exemption.", "Table 2 · p. 10", rules$1(10)), row("Level 2 example", "At least 0.2 mg/L in 80% of samples and no less than 0.1 mg/L at all times.", "D2.7 · p. 33", rules$1(33)), row("Level 3 example", "At least 0.2 mg/L in 85% of samples or time, with the remainder greater than 0.1 mg/L.", "D3.19 · p. 69", rules$1(69)));
 			rows.push(row("Why chlorine is used", "Residual disinfection helps keep network water safe; an unexpected drop may signal contamination or high chlorine demand.", "Taumata Arowai · chlorine explainer", "https://www.taumataarowai.govt.nz/learning-hub/source-monitoring-and-treatment/chlorine"), row("Health MAV", "The Standards' chlorine MAV is 5 mg/L as Cl₂. This upper health limit is not an operational target or a substitute for residual rules.", "2022 Standards · Schedule, Table 2", S), row("Taste and odour", "The Aesthetic Values Notice gives 0.3–1.0 mg/L free available chlorine for a chlorinated supply and says disinfection must not be compromised to avoid complaints.", "Aesthetic Values Notice · Schedule, p. 2", `${V}#page=2`), row("By-products and complaints", "Chlorine can form disinfection by-products with organic matter. Monitor the applicable MAVs and address taste or odour without compromising effective disinfection.", "Taumata Arowai · chlorine and by-products", "https://www.taumataarowai.govt.nz/learning-hub/source-monitoring-and-treatment/chlorine"));
 			return {
 				summary: /low|residual|zero|lost|drop/.test(q) ? "A low chlorine residual calls for checking the applicable distribution rule, the extent and duration of the result, and the cause. Protect consumers if water may be unsafe." : "Chlorine is used to disinfect water and maintain a residual in networks. Health limits, operational minimums, by-product limits and aesthetic values answer different questions; use the applicable one for your supply.",
@@ -11668,7 +11681,7 @@
 			summary: "Suppliers must take all reasonably practicable steps to supply aesthetically acceptable drinking water. Taste, smell and appearance merit investigation, but they cannot by themselves show whether water meets health limits.",
 			scope: "Aesthetic values and health-based MAVs serve different purposes. Investigate a sudden change and compare relevant laboratory results with both instruments. Disinfection must not be compromised to avoid taste or odour complaints.",
 			rows: [
-				row("Supplier duty", "Take reasonably practicable steps to supply aesthetically acceptable drinking water.", "Water Services Act · s 24", act(24)),
+				row("Supplier duty", "Take reasonably practicable steps to supply aesthetically acceptable drinking water.", "Water Services Act · s 24", act$1(24)),
 				row("Common examples", "The notice lists colour ≤15 TCU, iron ≤0.3 mg/L, manganese ≤0.04 mg/L for staining, and pH 7.0–8.5.", "Aesthetic Values Notice · Schedule, p. 2", `${V}#page=2`),
 				row("Chlorine taste", "For chlorinated supplies, the aesthetic value is 0.3–1.0 mg/L free available chlorine; disinfection must not be compromised to avoid complaints.", "Aesthetic Values Notice · Schedule, p. 2", `${V}#page=2`),
 				row("Taste and odour", "Taste and odour should be acceptable to most consumers; test and investigate persistent or sudden changes.", "Aesthetic Values Notice · Schedule, p. 3", `${V}#page=3`)
@@ -11685,9 +11698,9 @@
 				summary: `A ${type.replace("-", " ")} network or community is mapped to ${mapping[type][0]} under the current Rules.`,
 				scope: "This assumes the supply type matches the stated category and the Rules pathway is used. Self-supplied buildings, water carriers and eligible Acceptable Solutions differ.",
 				rows: [
-					row("Population category", mapping[type][1], "Rules · section 1.5, pp. 7–8", rules(8)),
-					row("Applicable modules", mapping[type][0], "Rules · Table 2, p. 10", rules(10)),
-					row("Apply to the registered supply", "The selected rule level applies to the whole registered supply, even if an individual component serves fewer people.", "Rules · section 3, p. 11", rules(11))
+					row("Population category", mapping[type][1], "Rules · section 1.5, pp. 7–8", rules$1(8)),
+					row("Applicable modules", mapping[type][0], "Rules · Table 2, p. 10", rules$1(10)),
+					row("Apply to the registered supply", "The selected rule level applies to the whole registered supply, even if an individual component serves fewer people.", "Rules · section 3, p. 11", rules$1(11))
 				]
 			};
 		}
@@ -11699,20 +11712,20 @@
 				row("Set and verify controls", "Use multiple barriers, monitor critical limits and verify that controls work in practice.", "Safety planning guidance · Managing risks and CHECK", G$1 + "#e671"),
 				row("Prepare for incidents", "Document response actions, responsibilities, communications and alternative water arrangements.", "Safety planning guidance · Respond when water becomes unsafe", G$1 + "#e665"),
 				row("Review and improve", "Record findings, review changes and incidents, and amend the plan as needed.", "Safety planning guidance · ACT", G$1 + "#e673"),
-				row("Plan duty", "The owner must have a drinking water safety plan unless an applicable exception applies.", "Water Services Act · s 30", act(30)),
-				row("Plan contents", "The Act sets out requirements for drinking water safety plans.", "Water Services Act · s 31", act(31)),
-				row("Source risks", "The Act sets out requirements for source water risk management plans.", "Water Services Act · s 43", act(43))
+				row("Plan duty", "The owner must have a drinking water safety plan unless an applicable exception applies.", "Water Services Act · s 30", act$1(30)),
+				row("Plan contents", "The Act sets out requirements for drinking water safety plans.", "Water Services Act · s 31", act$1(31)),
+				row("Source risks", "The Act sets out requirements for source water risk management plans.", "Water Services Act · s 43", act$1(43))
 			]
 		};
 		if (/duty|duties/.test(q)) return {
 			summary: "The Water Services Act sets supplier duties. A drinking water safety plan manages hazards across the supply where required, including source water risks.",
 			scope: "The Act and regulator guidance should be checked for the supply's registration status, timing, and any Acceptable Solution or exemption.",
 			rows: [
-				row("Safe drinking water", "Supply safe drinking water and take immediate steps if water is or may be unsafe.", "Water Services Act · s 21", act(21)),
-				row("Standards", "Ensure drinking water complies with the Standards and respond to non-compliance.", "Water Services Act · s 22", act(22)),
-				row("Safety planning", "The owner must have a drinking water safety plan unless an applicable exception or pathway applies.", "Water Services Act · s 30", act(30)),
-				row("Plan contents", "The Act sets out requirements for drinking water safety plans.", "Water Services Act · s 31", act(31)),
-				row("Source risks", "A source water risk management plan forms part of the safety plan where required.", "Water Services Act · s 43", act(43))
+				row("Safe drinking water", "Supply safe drinking water and take immediate steps if water is or may be unsafe.", "Water Services Act · s 21", act$1(21)),
+				row("Standards", "Ensure drinking water complies with the Standards and respond to non-compliance.", "Water Services Act · s 22", act$1(22)),
+				row("Safety planning", "The owner must have a drinking water safety plan unless an applicable exception or pathway applies.", "Water Services Act · s 30", act$1(30)),
+				row("Plan contents", "The Act sets out requirements for drinking water safety plans.", "Water Services Act · s 31", act$1(31)),
+				row("Source risks", "A source water risk management plan forms part of the safety plan where required.", "Water Services Act · s 43", act$1(43))
 			]
 		};
 		return null;
@@ -40697,98 +40710,200 @@
 	}
 	//#endregion
 	//#region app/about-page.tsx
-	function AboutPage({ onOpenLibrary }) {
-		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "eyebrow",
-				children: "ABOUT WATERRULES NZ"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", { children: [
-				"Sources first.",
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "Suppliers in focus." })
-			] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "lead",
-				children: "WaterRules NZ is a guide developed by Belle James to help New Zealand water suppliers find original requirements, local water pages and practical resources. It is an independent information site."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "about-why",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Why start here instead of a general Google search?" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "A general search is useful for discovery, but the result list does not by itself tell a supplier whether a page is current, legally binding, local guidance or historical commentary. WaterRules NZ organises those source roles around supplier questions and gives you a route back to the original text." }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "about-why-grid",
+	function AboutPage({ onOpenLibrary, onNavigate }) {
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+			className: "about-page",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "eyebrow",
+					children: "ABOUT WATERRULES NZ"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", { children: [
+					"Meet your guide to",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "New Zealand water rules." })
+				] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "lead",
+					children: "WaterRules NZ is a guide developed by Belle James to help New Zealand water suppliers find original requirements, local water pages and practical resources. It is an independent information site."
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "about-intro",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "about-identity",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Droplets, { size: 40 }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "WaterRules NZ" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Find · understand · plan · learn" })] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Built for suppliers, operators, community teams and curious learners in Aotearoa New Zealand. Bring your question; leave with a clearer path to the original publication." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "guide-links",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => onNavigate("guide"),
+								children: "Read the user guide"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => onNavigate("ask"),
+								children: "Ask WaterRules"
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "about-capabilities",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "What you can do here" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "guide-section-grid",
 						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Find the right layer" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Start with the Act, Standards, Rules or an applicable Acceptable Solution, then read regulator guidance for practice. Source labels help prevent an industry article or old PDF being mistaken for a current requirement." })] }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "See the evidence beside the answer" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Focused answers show an overview table with linked references in the final column. Open each source and check its date, scope and exact wording." })] }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Move to the right person" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Council links help with local notices and assets; Taumata Arowai is the place to clarify unclear national supplier guidance. A search result cannot confirm your supply's compliance status." })] })
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "scope-note",
-						children: "This site is an automated navigation aid with a curated, incomplete collection of sources. Search engines may find newer or additional material. Verify current law and local facts before acting."
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "table-scroll",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
-					className: "overview-table",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Organisation" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Role and purpose" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Official source" })
-					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tbody", { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Taumata Arowai" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "The statutory Water Services Authority and regulator. Its vision is “Kia tiakina te wai, hei oranga mō te katoa | Safe water every day for everyone”. It regulates drinking water and has oversight roles for wastewater and stormwater." }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "https://www.taumataarowai.govt.nz/about-us",
-								target: "_blank",
-								rel: "noopener noreferrer",
-								children: ["About the regulator ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
-							}) })
+							[
+								"ask",
+								"Find relevant requirements",
+								"Describe a supply question and explore source passages with linked references."
+							],
+							[
+								"dictionary",
+								"Understand the terminology",
+								"Look up water terms, abbreviations and their original sources."
+							],
+							[
+								"quiz",
+								"Build your knowledge",
+								"Practise with ten-question attempts and share a completed learning result."
+							],
+							[
+								"schedule",
+								"Plan the next step",
+								"Use sampling tools and official templates as starting points for your supply."
+							],
+							[
+								"councils",
+								"Explore your local context",
+								"Find council water pages, notices and map resources."
+							],
+							[
+								"library",
+								"Read the source",
+								"Browse the Act, Standards, Rules, guidance and technical references."
+							]
+						].map(([key, title, description]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { size: 20 }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: title }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: description }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => onNavigate(key),
+								children: ["Explore ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
+							})
+						] }, key))
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "about-method",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "How an answer takes shape" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "You provide context." }), " Your question and selected supply type help focus the search."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "The tool finds relevant passages." }), " Automated matching and prepared overviews organise the curated source collection."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "You check the original." }), " Read the references, version and scope before applying a requirement."] })
 						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Water New Zealand" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "A not-for-profit professional body supporting the water sector through knowledge sharing, connections, technical resources and advocacy. It does not set binding drinking water rules." }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "https://www.waternz.org.nz/about",
-								target: "_blank",
-								rel: "noopener noreferrer",
-								children: ["About Water New Zealand ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
-							}) })
-						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "IANZ" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "New Zealand's accreditation body; check a laboratory's scope for the exact drinking water tests you need." }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "https://www.ianz.govt.nz/",
-								target: "_blank",
-								rel: "noopener noreferrer",
-								children: ["IANZ ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
-							}) })
-						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "WaterRules NZ" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "Independent navigation and learning aid. Answers and project snapshots are not regulatory decisions, laboratory advice or an official register." }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "https://www.taumataarowai.govt.nz/contact-us",
-								target: "_blank",
-								rel: "noopener noreferrer",
-								children: ["Ask the regulator about unclear guidance ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
-							}) })
-						] })
-					] })]
-				})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "scope-note",
-				children: "Use the latest legislation and regulator publications for compliance. Local assets and notices should be confirmed with the relevant council or water organisation. The news feed is refreshed daily; the curated council, map and project links need periodic editorial checking."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AboutSources, { onOpenLibrary })
-		] });
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "This site does not have a live regulator or officer behind the answer box. It does not certify compliance or determine whether a treatment design is suitable." })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "about-why",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Why start here instead of a general Google search?" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "A general search is useful for discovery, but the result list does not by itself tell a supplier whether a page is current, legally binding, local guidance or historical commentary. WaterRules NZ organises those source roles around supplier questions and gives you a route back to the original text." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "about-why-grid",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Find the right layer" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Start with the Act, Standards, Rules or an applicable Acceptable Solution, then read regulator guidance for practice. Source labels help prevent an industry article or old PDF being mistaken for a current requirement." })] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "See the evidence beside the answer" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Focused answers show an overview table with linked references in the final column. Open each source and check its date, scope and exact wording." })] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Move to the right person" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Council links help with local notices and assets; Taumata Arowai is the place to clarify unclear national supplier guidance. A search result cannot confirm your supply's compliance status." })] })
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "scope-note",
+							children: "This site is an automated navigation aid with a curated, incomplete collection of sources. Search engines may find newer or additional material. Verify current law and local facts before acting."
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "about-organisations",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Who does what?" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "table-scroll",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
+							className: "overview-table",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Organisation" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Role and purpose" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Official source" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tbody", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Taumata Arowai" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "The statutory Water Services Authority and regulator. Its vision is “Kia tiakina te wai, hei oranga mō te katoa | Safe water every day for everyone”. It regulates drinking water and has oversight roles for wastewater and stormwater." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+										href: "https://www.taumataarowai.govt.nz/about-us",
+										target: "_blank",
+										rel: "noopener noreferrer",
+										children: ["About the regulator ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
+									}) })
+								] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "Water New Zealand" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "A not-for-profit professional body supporting the water sector through knowledge sharing, connections, technical resources and advocacy. It does not set binding drinking water rules." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+										href: "https://www.waternz.org.nz/about",
+										target: "_blank",
+										rel: "noopener noreferrer",
+										children: ["About Water New Zealand ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
+									}) })
+								] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "IANZ" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "New Zealand's accreditation body; check a laboratory's scope for the exact drinking water tests you need." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+										href: "https://www.ianz.govt.nz/",
+										target: "_blank",
+										rel: "noopener noreferrer",
+										children: ["IANZ ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
+									}) })
+								] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { children: "WaterRules NZ" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: "Independent navigation and learning aid. Answers and project snapshots are not regulatory decisions, laboratory advice or an official register." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+										href: "https://www.taumataarowai.govt.nz/contact-us",
+										target: "_blank",
+										rel: "noopener noreferrer",
+										children: ["Ask the regulator about unclear guidance ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })]
+									}) })
+								] })
+							] })]
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "about-trust",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Your work and your sources" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Question-bank snapshots stay in this browser. Refresh can resume active work in the same tab; another device does not automatically receive it. Contact reports are handled by the private server service. Weather, source links and advertising involve external services; review the Terms of Use before adding sensitive information." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Developed by Belle James for WaterRules NZ. If a source is outdated or a link is broken, use Report an issue to help improve the collection." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "guide-links",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => onNavigate("issue"),
+								children: "Suggest a correction"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => onNavigate("terms"),
+								children: "Read Terms of Use"
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "scope-note",
+					children: "Use the latest legislation and regulator publications for compliance. Local assets and notices should be confirmed with the relevant council or water organisation. The news feed is refreshed daily; the curated council, map and project links need periodic editorial checking."
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AboutSources, { onOpenLibrary })
+			]
+		});
 	}
 	function ReportIssue() {
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IssueForm, {});
@@ -41088,6 +41203,8 @@
 		"wai",
 		"portal",
 		"faq",
+		"guide",
+		"dictionary",
 		"about",
 		"issue",
 		"terms"
@@ -41126,17 +41243,20 @@
 		if (!Number.isSafeInteger(body.views) || body.views < 0) throw Error("Invalid page-view count");
 		return body;
 	}
-	function SiteFooter({ onTerms, onContact, onConnection }) {
-		const [count, setCount] = (0, import_react.useState)(null), [failed, setFailed] = (0, import_react.useState)(false), [localViews, setLocalViews] = (0, import_react.useState)(null);
+	function SiteFooter({ onTerms, onContact, onConnection, onGuide }) {
+		const [count, setCount] = (0, import_react.useState)(null), [failed, setFailed] = (0, import_react.useState)(false), [localViews, setLocalViews] = (0, import_react.useState)(null), [loading, setLoading] = (0, import_react.useState)(true);
 		function load() {
+			setLoading(true);
 			setFailed(false);
 			pageLoad ??= registerView();
 			pageLoad.then((v) => {
 				setCount(v);
 				setFailed(false);
+				setLoading(false);
 			}).catch(() => {
 				pageLoad = null;
 				setFailed(true);
+				setLoading(false);
 			});
 		}
 		(0, import_react.useEffect)(() => {
@@ -41146,17 +41266,20 @@
 			let tries = 0;
 			function refresh() {
 				if (!active) return;
+				setLoading(true);
 				setFailed(false);
 				pageLoad ??= registerView();
 				pageLoad.then((v) => {
 					if (active) {
 						setCount(v);
 						setFailed(false);
+						setLoading(false);
 					}
 				}).catch(() => {
 					pageLoad = null;
 					if (active) {
 						setFailed(true);
+						setLoading(false);
 						if (++tries < 3) timer = setTimeout(refresh, tries * 2500);
 					}
 				});
@@ -41223,42 +41346,1159 @@
 				]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "footer-bottom",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "© Belle James 2026. All rights reserved." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "© Water Rules NZ 2026. All rights reserved." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "footer-bottom-actions",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "page-view-count",
-							"aria-live": "polite",
-							title: count?.startedAt ? `Page loads counted since ${new Date(count.startedAt).toLocaleDateString("en-NZ", { timeZone: "Pacific/Auckland" })}. Reloads count; this is not a unique visitor total.` : failed ? "This is a device-local count while the shared service is disconnected." : "Shared page-load count; requires the included server.",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { size: 16 }), count ? `Page views: ${count.views.toLocaleString("en-NZ")}` : failed ? `Views in this browser: ${localViews ?? 1}` : "Page views: loading…"]
-						}),
-						failed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "counter-scope-note",
-								children: "Shared counter disconnected"
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: `footer-counter ${failed ? "is-local" : ""}`,
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "footer-counter-value",
+								role: "status",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { size: 18 }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: failed ? count ? "Last shared total" : "Views in this browser" : "Page views" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: count ? count.views.toLocaleString("en-NZ") : failed ? (localViews ?? 1).toLocaleString("en-NZ") : "—" })] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
+										className: "counter-badge",
+										children: loading ? "Checking…" : failed ? count ? "Offline" : "This browser only" : "Shared total"
+									})
+								]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => {
-									pageLoad = null;
-									load();
-								},
-								children: "Retry shared count"
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "footer-counter-note",
+								children: loading ? "Connecting to the shared counter…" : failed ? count ? "The shared counter is temporarily unavailable. This is the last total received." : "The shared counter is unavailable. This count is saved on this browser only." : `Page loads, including refreshes; not unique visitors.${count?.startedAt ? ` Since ${new Date(count.startedAt).toLocaleDateString("en-NZ", { timeZone: "Pacific/Auckland" })}.` : ""}`
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: onConnection,
-								children: "Connect services"
+							failed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "footer-counter-actions",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									disabled: loading,
+									onClick: () => {
+										pageLoad = null;
+										load();
+									},
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { size: 14 }), " Retry count"]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: onConnection,
+									children: "Connection settings"
+								})]
 							})
-						] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+						className: "footer-help-links",
+						"aria-label": "Footer help",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: onGuide,
+							children: "User guide"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 							type: "button",
 							onClick: onTerms,
 							children: "Terms of Use"
-						})
-					]
+						})]
+					})]
 				})]
 			})]
+		});
+	}
+	//#endregion
+	//#region app/guide-page.tsx
+	var guideSections = [
+		[
+			"ask",
+			"Ask a question",
+			"Find passages and source links for your supply question. Add source, population and situation; then verify the original text."
+		],
+		[
+			"bank",
+			"Question bank",
+			"Revisit answer snapshots saved in this browser, ask again or delete an entry."
+		],
+		[
+			"quiz",
+			"Knowledge quiz",
+			"Choose a focus, answer ten questions, read the cited explanations and share your completed result."
+		],
+		[
+			"schedule",
+			"Sampling Schedule",
+			"Build a planning schedule and download the checklist. Confirm frequencies and requirements for your supply."
+		],
+		[
+			"templates",
+			"Templates & safety plans",
+			"Find official monitoring, reporting, public notice and safety planning resources."
+		],
+		[
+			"changes",
+			"DWQAR changes",
+			"Compare current requirements with upcoming Rules and read transition references."
+		],
+		[
+			"weather",
+			"Weather & rainfall",
+			"View weather and regional rainfall, connect a service or analyse your own CSV data."
+		],
+		[
+			"library",
+			"Source library",
+			"Open legislation, Rules, Standards, guidance and technical publications by source role."
+		],
+		[
+			"dictionary",
+			"Water dictionary",
+			"Search definitions and abbreviations, filter a topic and open the original source."
+		],
+		[
+			"councils",
+			"Councils & notices",
+			"Find council water pages and local notices; confirm who operates your supply."
+		],
+		[
+			"maps",
+			"Three waters maps",
+			"Open water, wastewater, stormwater and bore map resources for the relevant area."
+		],
+		[
+			"wai",
+			"Wai & tikanga",
+			"Explore water principles and cultural context with links to original references."
+		],
+		[
+			"portal",
+			"Portal & news",
+			"Reach Hinekōrako, the public register and water-sector updates."
+		],
+		[
+			"faq",
+			"FAQ",
+			"Find answers to common supplier and public water questions."
+		],
+		[
+			"about",
+			"About",
+			"Learn what this independent tool offers and how its sources are organised."
+		],
+		[
+			"issue",
+			"Report an issue",
+			"Send a correction or enquiry. Keep a downloaded copy if notification delivery is pending."
+		],
+		[
+			"terms",
+			"Terms of Use",
+			"Read the site's scope, supplier responsibilities and conditions before using answers."
+		]
+	];
+	function GuidePage({ onNavigate }) {
+		const [query, setQuery] = (0, import_react.useState)("");
+		const selected = guideSections.filter((s) => s.join(" ").toLowerCase().includes(query.toLowerCase().trim()));
+		const go = (key, label) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+			href: sectionHref(key),
+			onClick: (e) => {
+				e.preventDefault();
+				onNavigate(key);
+			},
+			children: [label, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpRight, { size: 15 })]
+		});
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+			className: "guide-page",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "eyebrow",
+					children: "USER GUIDE"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", { children: [
+					"A clear path through",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "WaterRules NZ." })
+				] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "lead",
+					children: "Start with a question, follow the evidence and move to the tool you need. This guide explains the navigation and everyday workflows."
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "guide-start",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Your first five minutes" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Choose a starting point." }), " Use Ask for a question, Sources for an original document or Dictionary for an unfamiliar word."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Read the Terms of Use." }), " On Ask, tick the agreement before submitting."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Describe your supply." }), " Add the water source, population, location and issue. Choose the closest supply type when known."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Open the evidence." }), " Read the linked document and confirm its version, scope and exceptions."] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Continue your task." }), " Ask a follow-up, open a template, plan sampling or test your understanding in the quiz."] })
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "guide-links",
+							children: [
+								go("ask", "Start a question"),
+								go("dictionary", "Look up a word"),
+								go("library", "Browse sources")
+							]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "guide-navigation",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Find your way around" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "On a large screen, the left menu groups sections under Work, Plan & Review, Explore, and Updates & Help. Use “Find a section” to narrow the list. On a phone, tap the menu icon at the top, choose a section and the menu closes." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "The top shortcuts open Ask, Sampling Schedule, Question bank, Sources and this Guide. Your browser's Back and Forward buttons move between sections. Share page copies the current section's link." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							className: "guide-search",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { size: 17 }),
+								" Find a task",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+									type: "search",
+									value: query,
+									onChange: (e) => setQuery(e.target.value),
+									placeholder: "Quiz, notice, rainfall, definitions…"
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "tool-note",
+							role: "status",
+							children: [selected.length, " sections shown"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "guide-section-grid",
+							children: selected.map(([key, label, description]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: label }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: description }),
+								go(key, `Open ${label}`)
+							] }, key))
+						}),
+						selected.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "No matching tasks. Try a shorter word or clear the search." })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "guide-workflows",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Step-by-step workflows" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+							open: true,
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Ask a useful question and check an answer" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Open Ask and agree to the Terms of Use." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Type one clear question. For example: “What monitoring applies to our network serving 350 people?”" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Choose your supply type if known and select Find sources." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Read the overview and references together. Source matching is automated; a passage may not settle your situation." }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Use Ask a follow-up to add context. For uncertainty about requirements, contact the regulator." })
+								] }),
+								go("ask", "Open Ask")
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Learn with the quiz and share a result" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Open Knowledge quiz and choose a focus: mixed, scenarios, current Rules, upcoming Rules or Acceptable Solutions." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Answer the ten questions and review explanations and cited pages." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "When complete, use Share result, Copy result, WhatsApp or the text download." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "For Facebook or LinkedIn, paste the copied score into your post. Start a new attempt for another selection." })
+							] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "A quiz score is a learning result, not a compliance assessment." }),
+							go("quiz", "Open Knowledge quiz")
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Use a template or plan sampling" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Open Templates & safety plans and select a resource that matches your task." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Check its publisher, version and supply eligibility; open the official source if needed." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Download the file and adapt it to your supply." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Use Sampling Schedule for planning, then confirm the actual frequencies, locations and reporting duties against current requirements." })
+							] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "guide-links",
+								children: [go("templates", "Open templates"), go("schedule", "Open schedule")]
+							})
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Check rainfall or reconnect services" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Open Weather & rainfall and select the appropriate regional data. Rainfall connection lets you check the service address if live data cannot load. Static hosting needs a separate server for live rainfall, shared page views and private submissions. CSV analysis is available for your own data." }),
+							go("weather", "Open Weather & rainfall")
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Understand saved work, refresh and sharing" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Your selected section and active form or quiz progress resume in the same browser tab after refresh. Question-bank snapshots are stored in this browser. Clearing browser storage, using a private session or changing devices can remove that history. Keep exported copies of important work." }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Share page shares a section link; it does not share private drafts or grant access to a restricted site. Quiz-result sharing includes only the result text you choose to share." }),
+							go("bank", "Open question bank")
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: "Report an issue or contact the owner" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Open Report an issue, describe what went wrong and submit. Read the returned status: a saved report with email pending is different from a delivered notification. Keep a downloaded copy if needed. Do not include passwords, credentials or confidential supply details." }),
+							go("issue", "Open Report an issue")
+						] })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "guide-finish",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { size: 23 }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "Keep the original source in view" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "This independent guide supports navigation and learning. Your supplier remains responsible for checking applicable requirements and making operational decisions." }),
+						go("about", "About WaterRules NZ")
+					] })]
+				})
+			]
+		});
+	}
+	//#endregion
+	//#region app/dictionary-data.ts
+	var rules = "https://www.taumataarowai.govt.nz/assets/Drinking-Water-Supplier/Drinking-Water-Quality-Assurance-Rules-2022-Revised-2024.pdf";
+	var act = "https://www.legislation.govt.nz/act/public/2021/36/en/latest/";
+	var rows = [
+		[
+			"Annulus",
+			"",
+			"Source water",
+			"The space between a drilled bore hole and its casing.",
+			80
+		],
+		[
+			"Apron",
+			"Bore apron",
+			"Source water",
+			"An impermeable covering around a bore, usually concrete, intended to keep surface water out.",
+			80
+		],
+		[
+			"Backwash",
+			"Backwashing",
+			"Treatment",
+			"Cleaning a filter by sending water, sometimes with air, through it in the reverse direction.",
+			80
+		],
+		[
+			"Barrier",
+			"Treatment barrier",
+			"Treatment",
+			"A process or piece of infrastructure that helps prevent or reduce contamination.",
+			80
+		],
+		[
+			"Benthic cyanobacterial mat",
+			"Benthic algae",
+			"Water quality",
+			"A mass of cyanobacteria growing on the bottom of a water body.",
+			80,
+			["cyanobacteria"]
+		],
+		[
+			"Bore",
+			"Well",
+			"Source water",
+			"A constructed, usually cased hole used to obtain groundwater.",
+			80,
+			["groundwater", "bore-head"]
+		],
+		[
+			"Bore head",
+			"Headworks",
+			"Source water",
+			"The accessible part of bore infrastructure above ground or inside an inspection chamber.",
+			80,
+			["bore", "apron"]
+		],
+		[
+			"C.t value",
+			"CT|Chlorine contact time",
+			"Treatment",
+			"Disinfectant concentration multiplied by effective contact time. Use the relevant rule and design assumptions to interpret it.",
+			80,
+			["contact-time", "disinfection"]
+		],
+		[
+			"Calibration",
+			"",
+			"Monitoring",
+			"Comparing an instrument with a known reference and adjusting it where necessary.",
+			80,
+			["verification"]
+		],
+		[
+			"Calmed bottom inlet",
+			"Tank inlet",
+			"Source water",
+			"A tank inlet arrangement intended to avoid stirring up sediment on the tank floor.",
+			80
+		],
+		[
+			"Cartridge",
+			"Filter cartridge",
+			"Treatment",
+			"The replaceable part of a filter that captures particles.",
+			80,
+			["cartridge-filtration"]
+		],
+		[
+			"Cartridge filtration",
+			"",
+			"Treatment",
+			"Passing water through a replaceable cartridge to remove particulate material.",
+			80,
+			["pore-size"]
+		],
+		[
+			"Certification",
+			"",
+			"Monitoring",
+			"Written confirmation that specified requirements or standards have been met, often supplied by a manufacturer.",
+			80,
+			["validation"]
+		],
+		[
+			"Coagulation",
+			"",
+			"Treatment",
+			"A chemical treatment step that helps fine material come together before flocculation and removal.",
+			80,
+			["flocculation"]
+		],
+		[
+			"Contact time",
+			"Hydraulic residence time",
+			"Treatment",
+			"The time water spends in a disinfection process; effective contact time depends on the flow arrangement.",
+			81,
+			["t10", "c-t-value"]
+		],
+		[
+			"T10",
+			"Effective contact time",
+			"Treatment",
+			"The time by which 10% of a volume has passed through a tank; used to describe effective disinfection contact time.",
+			81,
+			["contact-time"]
+		],
+		[
+			"Cross connection",
+			"",
+			"Distribution",
+			"An actual or possible connection between a drinking water system and other infrastructure, such as wastewater or stormwater.",
+			81,
+			["backflow"]
+		],
+		[
+			"Cyanobacteria",
+			"Blue-green algae",
+			"Water quality",
+			"Photosynthetic microorganisms; some can produce toxins that require specific drinking water risk management.",
+			81,
+			["cyanotoxin"]
+		],
+		[
+			"Cyanotoxin",
+			"Cyanotoxins",
+			"Water quality",
+			"A toxin produced by cyanobacteria.",
+			81,
+			["cyanobacteria"]
+		],
+		[
+			"Differential pressure",
+			"Pressure drop",
+			"Treatment",
+			"The difference in pressure between two points, such as the inlet and outlet of a filter.",
+			81
+		],
+		[
+			"Direct filtration",
+			"",
+			"Treatment",
+			"Coagulation, flocculation and filtration without a separate sedimentation step beforehand.",
+			81,
+			[
+				"coagulation",
+				"flocculation",
+				"filtration"
+			]
+		],
+		[
+			"Direct integrity test",
+			"DIT",
+			"Monitoring",
+			"A physical test of a membrane unit intended to detect leaks that could allow contamination through.",
+			81,
+			["membrane-filtration"]
+		],
+		[
+			"Disinfection",
+			"",
+			"Treatment",
+			"A process used to kill or inactivate microorganisms in water.",
+			81,
+			["inactivation", "residual-disinfection"]
+		],
+		[
+			"Disinfection by-product",
+			"DBP",
+			"Water quality",
+			"A substance formed as a result of disinfection reactions.",
+			81,
+			["disinfection"]
+		],
+		[
+			"Dissolved air flotation",
+			"DAF",
+			"Treatment",
+			"A clarification process in which air bubbles lift floc to the surface for removal.",
+			81,
+			["flocculation"]
+		],
+		[
+			"Distribution system",
+			"Reticulation",
+			"Distribution",
+			"The infrastructure that moves drinking water to consumers or other suppliers, including pipes, pumps and storage.",
+			81,
+			["distribution-zone"]
+		],
+		[
+			"Distribution zone",
+			"",
+			"Distribution",
+			"A defined part of a distribution system containing water with similar characteristics.",
+			81,
+			["distribution-system"]
+		],
+		[
+			"Duty UVI sensor",
+			"Online UV sensor",
+			"Monitoring",
+			"The sensor that monitors UV intensity during a UV reactor's operation.",
+			82,
+			["uv-intensity", "reference-uvi-sensor"]
+		],
+		[
+			"Escherichia coli",
+			"E. coli|E coli",
+			"Water quality",
+			"A bacterium used as an indicator of faecal contamination. Detection needs a supplier response under the applicable requirements.",
+			82
+		],
+		[
+			"Event-based monitoring",
+			"Event monitoring",
+			"Monitoring",
+			"Monitoring designed to understand how a particular event affects supply operation and water safety.",
+			82
+		],
+		[
+			"Filtrate",
+			"Filtered water",
+			"Treatment",
+			"Water leaving a filter, excluding wash water.",
+			82,
+			["filtration"]
+		],
+		[
+			"Filtration",
+			"",
+			"Treatment",
+			"Removing particles by passing water through a suitable medium or barrier.",
+			82,
+			["media-filter", "membrane-filtration"]
+		],
+		[
+			"Filter housing",
+			"Filtration housing",
+			"Treatment",
+			"The casing that contains a cartridge or other filter material.",
+			82,
+			["cartridge"]
+		],
+		[
+			"Floating off-take",
+			"Floating intake",
+			"Source water",
+			"A floating device that draws water from near the top of stored water.",
+			82
+		],
+		[
+			"Flocculation",
+			"Floc",
+			"Treatment",
+			"A step that promotes the growth of loose clumps of fine particles so they can be removed.",
+			82,
+			["coagulation", "sedimentation"]
+		],
+		[
+			"Free available chlorine",
+			"FAC",
+			"Monitoring",
+			"The free chlorine in chlorinated water, present as hypochlorous acid and hypochlorite ion.",
+			82,
+			["free-available-chlorine-equivalent"]
+		],
+		[
+			"Free available chlorine equivalent",
+			"FACE",
+			"Monitoring",
+			"The FAC concentration with equivalent disinfecting effect when expressed at pH 8, as used in the Rules.",
+			82,
+			["free-available-chlorine"]
+		],
+		[
+			"Groundwater",
+			"Underground water",
+			"Source water",
+			"Water beneath the land surface.",
+			82,
+			["bore", "spring"]
+		],
+		[
+			"Inactivation",
+			"Inactivate",
+			"Treatment",
+			"Preventing a microorganism from reproducing.",
+			82,
+			["disinfection"]
+		],
+		[
+			"Instantaneous total return rate",
+			"Return flow",
+			"Treatment",
+			"The recycled-water flow entering the treatment system at a particular moment.",
+			82,
+			["recycled-water"]
+		],
+		[
+			"Log credit",
+			"Log reduction credit",
+			"Treatment",
+			"A log-scale measure used to describe credited control of a target microorganism by treatment.",
+			82
+		],
+		[
+			"Media filter",
+			"Sand filter",
+			"Treatment",
+			"A filter that uses a medium such as sand to capture particles.",
+			83,
+			["rapid-media-filter", "slow-sand-filtration"]
+		],
+		[
+			"Membrane filtration",
+			"",
+			"Treatment",
+			"Pressure or vacuum moves water through an engineered membrane that rejects particulate material.",
+			83,
+			["direct-integrity-test", "pore-size"]
+		],
+		[
+			"Microfiltration",
+			"MF",
+			"Treatment",
+			"A membrane filtration process with relatively small pores; consult the Rules for its specified pore-size range.",
+			83,
+			["membrane-filtration", "ultrafiltration"]
+		],
+		[
+			"Nephelometric turbidity unit",
+			"NTU",
+			"Monitoring",
+			"A unit used to report turbidity measurements.",
+			83,
+			["turbidity"]
+		],
+		[
+			"Oocysts and cysts",
+			"(oo)cysts",
+			"Water quality",
+			"Structures used by certain protozoa to survive and spread; treatment requirements address their control.",
+			83
+		],
+		[
+			"Ozone contactor",
+			"",
+			"Treatment",
+			"A vessel that helps ozone dissolve into water and provides time for disinfection.",
+			83,
+			["ozone-residual"]
+		],
+		[
+			"Ozone residual",
+			"",
+			"Monitoring",
+			"Ozone that remains in the water after disinfection.",
+			83,
+			["ozone-contactor"]
+		],
+		[
+			"pH adjustment",
+			"",
+			"Treatment",
+			"Changing water's acidity or alkalinity by adding acidic or basic substances.",
+			83
+		],
+		[
+			"Planktonic cyanobacteria",
+			"",
+			"Water quality",
+			"Cyanobacteria floating freely in a water body.",
+			83,
+			["cyanobacteria"]
+		],
+		[
+			"Pore size",
+			"",
+			"Treatment",
+			"The nominal or absolute size of openings in a filter or membrane.",
+			83,
+			["membrane-filtration"]
+		],
+		[
+			"Rapid media filter",
+			"",
+			"Treatment",
+			"A gravity-fed or pressure-fed media filter that is regularly backwashed.",
+			83,
+			["backwash", "media-filter"]
+		],
+		[
+			"Recycled water",
+			"Treatment recycle",
+			"Treatment",
+			"Water returned to the start of a treatment process. Here this means treatment recycle, not a general reclaimed-water category.",
+			83
+		],
+		[
+			"Reduction equivalent dose",
+			"RED",
+			"Treatment",
+			"A UV dose value established using the dose-response relationship during reactor validation.",
+			83,
+			["uv-dose", "validation"]
+		],
+		[
+			"Reference UVI sensor",
+			"Reference UV sensor",
+			"Monitoring",
+			"A calibrated reference sensor used to check the duty UV sensor.",
+			83,
+			["duty-uvi-sensor", "verification"]
+		],
+		[
+			"Residual disinfection",
+			"Disinfectant residual",
+			"Distribution",
+			"Disinfectant remaining after treatment that helps protect water from recontamination in the distribution system.",
+			84,
+			["disinfection", "free-available-chlorine"]
+		],
+		[
+			"Roof water",
+			"Rainwater",
+			"Source water",
+			"Rainwater collected from a roof.",
+			84
+		],
+		[
+			"Sampling point",
+			"Sampling site",
+			"Monitoring",
+			"A location or tap used to collect water samples.",
+			84
+		],
+		[
+			"Sedimentation",
+			"Settling",
+			"Treatment",
+			"Allowing solids to settle in a tank or clarifier so they can be removed.",
+			84,
+			["flocculation"]
+		],
+		[
+			"Slow sand filtration",
+			"",
+			"Treatment",
+			"Filtration through fine sand supported by a biologically active surface layer; it is not routinely backwashed like rapid filtration.",
+			84,
+			["rapid-media-filter"]
+		],
+		[
+			"Spring",
+			"",
+			"Source water",
+			"A place where groundwater naturally reaches the land surface.",
+			84,
+			["groundwater"]
+		],
+		[
+			"Surface loading rate",
+			"",
+			"Treatment",
+			"Water flow through a clarifier divided by the effective settling surface area.",
+			84,
+			["sedimentation"]
+		],
+		[
+			"Surface water",
+			"",
+			"Source water",
+			"Water exposed to the atmosphere, such as rivers, streams, lakes and reservoirs.",
+			84
+		],
+		[
+			"Target turnover rate",
+			"Tank turnover",
+			"Distribution",
+			"The intended time for a tank's stored water volume to be replaced.",
+			84
+		],
+		[
+			"Total coliforms",
+			"Coliforms",
+			"Water quality",
+			"A group of bacteria identified by specified laboratory culture methods; interpret results with the relevant monitoring requirements.",
+			84,
+			["escherichia-coli"]
+		],
+		[
+			"Turbidity",
+			"Cloudiness",
+			"Water quality",
+			"A measure of loss of water clarity caused by particles scattering light.",
+			84,
+			["nephelometric-turbidity-unit"]
+		],
+		[
+			"Ultrafiltration",
+			"UF",
+			"Treatment",
+			"Membrane filtration with smaller pores than microfiltration; consult the Rules for its specified range.",
+			85,
+			["microfiltration"]
+		],
+		[
+			"UV dose",
+			"Ultraviolet dose",
+			"Treatment",
+			"UV energy delivered during exposure, commonly expressed in mJ/cm².",
+			85,
+			["uv-intensity", "reduction-equivalent-dose"]
+		],
+		[
+			"UV intensity",
+			"UVI",
+			"Monitoring",
+			"The intensity of ultraviolet radiation, commonly expressed in mW/cm².",
+			85,
+			["duty-uvi-sensor"]
+		],
+		[
+			"UV transmittance",
+			"UVT",
+			"Monitoring",
+			"A measure of how much ultraviolet light passes through water, usually measured at 254 nm.",
+			85,
+			["uv-dose", "turbidity"]
+		],
+		[
+			"Validation",
+			"",
+			"Monitoring",
+			"Confirmation that equipment or a process meets specified performance requirements; often used for UV reactors and membranes.",
+			85,
+			["verification"]
+		],
+		[
+			"Verification",
+			"",
+			"Monitoring",
+			"Checking an instrument's accuracy against a known reference, without necessarily adjusting it.",
+			85,
+			["calibration"]
+		],
+		[
+			"Waste stream",
+			"",
+			"Treatment",
+			"A flow leaving treatment that is not intended for further treatment or use as drinking water.",
+			85
+		]
+	];
+	function termId(term) {
+		return term.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+	}
+	var dictionary = rows.map(([term, aliases, category, definition, page, related = []]) => ({
+		id: termId(term),
+		term,
+		aliases: aliases ? aliases.split("|") : [],
+		category,
+		definition,
+		source: `2022 Quality Assurance Rules (revised 2024) · definitions, p. ${page}`,
+		url: `${rules}#page=${page}`,
+		related
+	}));
+	[
+		[
+			"Acceptable Solution",
+			"AS",
+			"Framework",
+			"A compliance pathway for eligible supplies. Check the full instrument's eligibility and conditions before choosing it.",
+			"https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/ways-to-comply/acceptable-solutions"
+		],
+		[
+			"Aesthetic Values",
+			"AV",
+			"Framework",
+			"Values addressing characteristics such as taste, odour and appearance. They have a different role from health-based Standards.",
+			"https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/ways-to-comply/drinking-water-quality-assurance-rules"
+		],
+		[
+			"Maximum acceptable value",
+			"MAV",
+			"Framework",
+			"A limit for a determinand in drinking water under the Standards. Check the original table, units and notes.",
+			"https://www.legislation.govt.nz/regulation/public/2022/0168/latest/whole.html"
+		],
+		[
+			"Determinand",
+			"",
+			"Water quality",
+			"A substance, organism or characteristic being measured in a water test.",
+			"https://www.legislation.govt.nz/regulation/public/2022/0168/latest/whole.html"
+		],
+		[
+			"Drinking Water Quality Assurance Rules",
+			"DWQAR|Rules",
+			"Framework",
+			"Requirements covering treatment, monitoring and reporting. The current and upcoming editions need to be distinguished.",
+			"https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/ways-to-comply/drinking-water-quality-assurance-rules"
+		],
+		[
+			"Drinking Water Standards",
+			"Standards",
+			"Framework",
+			"The regulations setting limits for determinands in drinking water; read each value with its units and notes.",
+			"https://www.legislation.govt.nz/regulation/public/2022/0168/latest/whole.html"
+		],
+		[
+			"Drinking water safety plan",
+			"DWSP",
+			"Framework",
+			"A documented approach to identifying and managing risks for a supply; use the regulator's guidance and applicable requirements.",
+			"https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/for-drinking-water-suppliers/how-to-guidance/preparing-a-drinking-water-safety-plan/guidance-for-drinking-water-safety-planning"
+		],
+		[
+			"Water Services Act 2021",
+			"Act|WSA",
+			"Framework",
+			"The Act establishing drinking water supplier responsibilities and the regulatory framework. Read the current legislation for exact duties.",
+			act
+		],
+		[
+			"Backflow",
+			"",
+			"Distribution",
+			"Water flowing back towards a drinking water supply from a connected installation. The Act provides the legal definition.",
+			act
+		],
+		[
+			"Point of supply",
+			"",
+			"Distribution",
+			"The boundary used to define where water is supplied; consult section 13 of the Act for the legal definition.",
+			act
+		],
+		[
+			"Hinekōrako",
+			"Hinekorako",
+			"Framework",
+			"The regulator's online portal for supplier information and reporting.",
+			"https://www.taumataarowai.govt.nz/hinekorako"
+		]
+	].forEach(([term, aliases, category, definition, url, related = []]) => dictionary.push({
+		id: termId(term),
+		term,
+		aliases: aliases ? aliases.split("|") : [],
+		category,
+		definition,
+		url,
+		source: "Official legislation or regulator guidance",
+		related
+	}));
+	dictionary.sort((a, b) => a.term.localeCompare(b.term, "en-NZ"));
+	function normaliseTerm(text) {
+		return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+	}
+	function filterDictionary(query, category = "All", letter = "All") {
+		const q = normaliseTerm(query.trim());
+		return dictionary.filter((e) => (category === "All" || e.category === category) && (letter === "All" || e.term[0].toUpperCase() === letter) && normaliseTerm([
+			e.term,
+			...e.aliases,
+			e.definition
+		].join(" ")).includes(q));
+	}
+	//#endregion
+	//#region app/dictionary-page.tsx
+	function DictionaryPage({ onAsk }) {
+		const [query, setQuery] = (0, import_react.useState)(""), [category, setCategory] = (0, import_react.useState)("All"), [letter, setLetter] = (0, import_react.useState)("All"), [featured, setFeatured] = (0, import_react.useState)(dictionary[0]);
+		(0, import_react.useEffect)(() => {
+			setFeatured(dictionary[([...(/* @__PURE__ */ new Date()).toLocaleDateString("en-CA", { timeZone: "Pacific/Auckland" })].reduce((n, c) => n * 31 + c.charCodeAt(0), 0) >>> 0) % dictionary.length]);
+		}, []);
+		const entries = filterDictionary(query, category, letter);
+		const letters = [...new Set(dictionary.map((e) => e.term[0].toUpperCase()))].sort();
+		const categories = ["All", ...new Set(dictionary.map((e) => e.category))];
+		function showRelated(id) {
+			const term = dictionary.find((e) => e.id === id);
+			if (term) {
+				setQuery(term.term);
+				setCategory("All");
+				setLetter("All");
+				document.getElementById("dictionary-search")?.focus();
+			}
+		}
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+			className: "dictionary-page",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "eyebrow",
+					children: "WATER DICTIONARY · A–Z"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", { children: [
+					"Understand the words.",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "Read the source." })
+				] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "lead",
+					children: [
+						"Plain-language explanations of ",
+						dictionary.length,
+						" water terms and abbreviations. Search a term, browse a topic, or take a question to Ask WaterRules."
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+					className: "dictionary-feature",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "eyebrow",
+							children: "TERM OF THE DAY · NEW ZEALAND TIME"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: featured.term }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: featured.definition }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							className: "tool-secondary",
+							onClick: () => showRelated(featured.id),
+							children: ["Explore this term ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { size: 16 })]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "dictionary-controls",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							htmlFor: "dictionary-search",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { size: 17 }), " Search the dictionary"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							id: "dictionary-search",
+							type: "search",
+							value: query,
+							onChange: (e) => {
+								setQuery(e.target.value);
+								setLetter("All");
+							},
+							placeholder: "Try E. coli, turbidity, MAV, UVT…"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "dictionary-chips",
+							"aria-label": "Dictionary categories",
+							children: categories.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								"aria-pressed": category === c,
+								className: category === c ? "selected" : "",
+								onClick: () => setCategory(c),
+								children: c
+							}, c))
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "dictionary-alphabet",
+							"aria-label": "Browse by first letter",
+							children: ["All", ...letters].map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								className: letter === l ? "selected" : "",
+								"aria-pressed": letter === l,
+								onClick: () => setLetter(l),
+								children: l
+							}, l))
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "tool-note",
+					role: "status",
+					children: [
+						entries.length,
+						" ",
+						entries.length === 1 ? "term" : "terms",
+						" shown"
+					]
+				}),
+				entries.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "dictionary-empty",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: "No matching terms" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Try an abbreviation, a broader word or another category." }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							className: "tool-secondary",
+							onClick: () => {
+								setQuery("");
+								setCategory("All");
+								setLetter("All");
+							},
+							children: "Clear filters"
+						})
+					]
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "dictionary-list",
+					children: entries.map((e) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+						className: "dictionary-entry",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: e.term }), e.aliases.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: e.aliases.join(" · ") })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "dictionary-category",
+							children: e.category
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "dictionary-definition",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: e.definition }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+									href: e.url,
+									target: "_blank",
+									rel: "noreferrer",
+									children: [
+										e.source,
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { size: 14 })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "dictionary-entry-actions",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										className: "tool-secondary",
+										onClick: () => onAsk(`What do the drinking water requirements say about ${e.term}?`),
+										children: "Ask about this term"
+									}), e.related.map((id) => {
+										const r = dictionary.find((x) => x.id === id);
+										return r ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											className: "dictionary-related",
+											onClick: () => showRelated(id),
+											children: r.term
+										}, id) : null;
+									})]
+								})
+							]
+						})]
+					}, e.id))
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "scope-note",
+					children: "These explanations are learning aids, not the exact legal definitions. The original source takes priority. Check the document's version, context and applicability; the 2026 Rules have their own definitions and future commencement."
+				})
+			]
 		});
 	}
 	//#endregion
@@ -41557,6 +42797,11 @@
 					BookOpen
 				],
 				[
+					"dictionary",
+					"Water dictionary",
+					BookOpen
+				],
+				[
 					"councils",
 					"Councils & notices",
 					FileText
@@ -41576,6 +42821,11 @@
 		{
 			label: "UPDATES & HELP",
 			items: [
+				[
+					"guide",
+					"User guide",
+					BookOpen
+				],
 				[
 					"portal",
 					"Portal & news",
@@ -41731,7 +42981,8 @@
 								["ask", "Ask"],
 								["schedule", "Sampling Schedule"],
 								["bank", "Question bank"],
-								["library", "Sources"]
+								["library", "Sources"],
+								["guide", "Guide"]
 							].map(([key, label]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								className: tab === key ? "selected" : "",
 								onClick: () => {
@@ -42011,7 +43262,10 @@
 							}) : tab === "councils" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CouncilDirectory, {}) : tab === "portal" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalNews, {}) : tab === "maps" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapsPage, {}) : tab === "faq" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FAQPage, {
 								onOpenCouncils: () => setTab("councils"),
 								onAsk: ask
-							}) : tab === "about" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AboutPage, { onOpenLibrary: () => setTab("library") }) : tab === "issue" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReportIssue, {}) : tab === "terms" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TermsPage, {}) : tab === "wai" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WaiPage, { onAsk: ask }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+							}) : tab === "guide" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GuidePage, { onNavigate: setTab }) : tab === "dictionary" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DictionaryPage, { onAsk: ask }) : tab === "about" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AboutPage, {
+								onOpenLibrary: () => setTab("library"),
+								onNavigate: setTab
+							}) : tab === "issue" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReportIssue, {}) : tab === "terms" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TermsPage, {}) : tab === "wai" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WaiPage, { onAsk: ask }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 								className: "library",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
@@ -42187,6 +43441,7 @@
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SiteFooter, {
+					onGuide: () => setTab("guide"),
 					onTerms: () => setTab("terms"),
 					onContact: () => setTab("issue"),
 					onConnection: () => setTab("weather")
