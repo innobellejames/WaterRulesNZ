@@ -11752,7 +11752,12 @@
 		try {
 			return await requestAt(endpoint, options, selected);
 		} catch (error) {
-			if (!(error instanceof ServiceAddressError) || new URL(selected, document.baseURI).href === new URL(own, document.baseURI).href) throw error;
+			if (!(error instanceof ServiceAddressError)) throw error;
+			let sameAddress = false;
+			try {
+				sameAddress = new URL(selected, document.baseURI).href === new URL(own, document.baseURI).href;
+			} catch {}
+			if (sameAddress) throw error;
 			const result = await requestAt(endpoint, options, own);
 			try {
 				localStorage.removeItem("waterrules-site-api-base-v1");
@@ -11762,7 +11767,12 @@
 		}
 	}
 	async function requestAt(endpoint, options, base) {
-		const url = new URL(endpoint, new URL(base, document.baseURI));
+		let url;
+		try {
+			url = new URL(endpoint, new URL(base, document.baseURI));
+		} catch {
+			throw new ServiceAddressError("The saved service address is invalid. Check the connection settings.");
+		}
 		if (!["https:", "http:"].includes(url.protocol)) throw Error("Start the included website server to use this feature.");
 		const headers = new Headers(options.headers);
 		headers.set("Accept", "application/json");
@@ -41219,37 +41229,31 @@
 	//#endregion
 	//#region app/site-footer.tsx
 	var LINKEDIN = "https://www.linkedin.com/in/belle-james-68676590/";
-	var LOCAL_COUNT = "waterrules-device-page-loads-v1";
-	var deviceLoad = null;
-	function deviceViews() {
-		if (deviceLoad !== null) return deviceLoad;
-		try {
-			const prior = Number(localStorage.getItem(LOCAL_COUNT) || 0);
-			deviceLoad = (Number.isSafeInteger(prior) && prior >= 0 ? prior : 0) + 1;
-			localStorage.setItem(LOCAL_COUNT, String(deviceLoad));
-		} catch {
-			deviceLoad = 1;
-		}
-		return deviceLoad;
-	}
 	var pageLoad = null;
 	var viewId = null;
 	async function registerView() {
 		viewId ??= globalThis.crypto?.randomUUID?.() || `${Date.now().toString(16)}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
-		const body = await siteRequest("page-views", {
+		return checkedCount(await siteRequest("page-views", {
 			method: "POST",
 			headers: { "X-WaterRules-View-Id": viewId }
-		});
+		}));
+	}
+	function checkedCount(body) {
 		if (!Number.isSafeInteger(body.views) || body.views < 0) throw Error("Invalid page-view count");
 		return body;
 	}
+	async function readViews() {
+		return checkedCount(await siteRequest("page-views", {
+			method: "GET",
+			cache: "no-store"
+		}));
+	}
 	function SiteFooter({ onTerms, onContact, onConnection, onGuide }) {
-		const [count, setCount] = (0, import_react.useState)(null), [failed, setFailed] = (0, import_react.useState)(false), [localViews, setLocalViews] = (0, import_react.useState)(null), [loading, setLoading] = (0, import_react.useState)(true);
+		const [count, setCount] = (0, import_react.useState)(null), [failed, setFailed] = (0, import_react.useState)(false), [loading, setLoading] = (0, import_react.useState)(true);
 		function load() {
 			setLoading(true);
-			setFailed(false);
 			pageLoad ??= registerView();
-			pageLoad.then((v) => {
+			pageLoad.then(() => readViews()).then((v) => {
 				setCount(v);
 				setFailed(false);
 				setLoading(false);
@@ -41260,43 +41264,62 @@
 			});
 		}
 		(0, import_react.useEffect)(() => {
-			let active = true;
-			setLocalViews(deviceViews());
+			let active = true, busy = false, registered = false;
 			let timer;
 			let tries = 0;
-			function refresh() {
-				if (!active) return;
+			async function refresh() {
+				if (!active || busy) return;
+				busy = true;
 				setLoading(true);
-				setFailed(false);
-				pageLoad ??= registerView();
-				pageLoad.then((v) => {
+				try {
+					if (!registered) {
+						pageLoad ??= registerView();
+						await pageLoad;
+						registered = true;
+					}
+					const v = await readViews();
 					if (active) {
 						setCount(v);
 						setFailed(false);
-						setLoading(false);
+						tries = 0;
 					}
-				}).catch(() => {
+				} catch {
 					pageLoad = null;
 					if (active) {
 						setFailed(true);
-						setLoading(false);
 						if (++tries < 3) timer = setTimeout(refresh, tries * 2500);
 					}
-				});
+				} finally {
+					busy = false;
+					if (active) setLoading(false);
+				}
 			}
 			function reconnect() {
 				tries = 0;
+				registered = false;
 				pageLoad = null;
+				if (timer) clearTimeout(timer);
 				refresh();
 			}
+			function visible() {
+				if (document.visibilityState === "visible") refresh();
+			}
 			refresh();
+			const interval = setInterval(() => {
+				if (document.visibilityState === "visible") refresh();
+			}, 6e4);
 			window.addEventListener("online", reconnect);
 			window.addEventListener("waterrules-service-changed", reconnect);
+			window.addEventListener("focus", visible);
+			document.addEventListener("visibilitychange", visible);
 			return () => {
 				active = false;
 				if (timer) clearTimeout(timer);
+				clearInterval(interval);
 				window.removeEventListener("online", reconnect);
 				window.removeEventListener("waterrules-service-changed", reconnect);
+				window.removeEventListener("focus", visible);
+				document.removeEventListener("visibilitychange", visible);
 			};
 		}, []);
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
@@ -41356,16 +41379,16 @@
 								role: "status",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { size: 18 }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: failed ? count ? "Last shared total" : "Views in this browser" : "Page views" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: count ? count.views.toLocaleString("en-NZ") : failed ? (localViews ?? 1).toLocaleString("en-NZ") : "—" })] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Total page views" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: count ? count.views.toLocaleString("en-NZ") : "—" })] }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", {
 										className: "counter-badge",
-										children: loading ? "Checking…" : failed ? count ? "Offline" : "This browser only" : "Shared total"
+										children: loading ? "Updating…" : failed ? count ? "Last known total" : "Unavailable" : "Across all visitors"
 									})
 								]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "footer-counter-note",
-								children: loading ? "Connecting to the shared counter…" : failed ? count ? "The shared counter is temporarily unavailable. This is the last total received." : "The shared counter is unavailable. This count is saved on this browser only." : `Page loads, including refreshes; not unique visitors.${count?.startedAt ? ` Since ${new Date(count.startedAt).toLocaleDateString("en-NZ", { timeZone: "Pacific/Auckland" })}.` : ""}`
+								children: loading ? "Connecting to the shared counter…" : failed ? count ? "The counter is temporarily unavailable. Showing the last shared total received." : "Connect the page-view service to display the total across all visitors." : `Page loads across all visitors and browsers, including refreshes; not unique people.${count?.startedAt ? ` Since ${new Date(count.startedAt).toLocaleDateString("en-NZ", { timeZone: "Pacific/Auckland" })}.` : ""}`
 							}),
 							failed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "footer-counter-actions",
