@@ -6,7 +6,7 @@ import {resolve,extname,sep} from 'node:path';
 import {handlePageViews} from './page-view-service.mjs';
 import {handleRainfall} from './rainfall-service.mjs';
 import {handleRegionalRainfall} from './regional-rainfall-service.mjs';
-import {handleIssue} from './issue-service.mjs';
+import {handleLaboratoryRegister} from './laboratory-register-service.mjs';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const port=Number(process.env.PORT||8080),host=process.env.HOST||'127.0.0.1';
 const prefix=(process.env.BASE_PATH||'').replace(/\/$/,'');
@@ -32,23 +32,17 @@ createServer(async(req,res)=>{
    if(origin){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');}
    res.setHeader('Access-Control-Allow-Methods','GET, HEAD, POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Accept, Content-Type, X-WaterRules-View-Id');res.setHeader('X-Content-Type-Options','nosniff');
    if(req.method==='OPTIONS'){res.writeHead(204);res.end();return;}
-   if(path==='/api/issues'){
-    if(req.method!=='POST'){json({error:'Method not allowed'},405);return;}
-    let text='',size=0;for await(const chunk of req){size+=chunk.length;if(size>16000){json({error:'This report is too long.'},413);return;}text+=chunk.toString();}
-    const ip=forwarded?String(req.headers['x-forwarded-for']||req.socket.remoteAddress).split(',')[0]:req.socket.remoteAddress;
-    const visitor=createHash('sha256').update(String(ip)).digest('hex');
-    await respond(await handleIssue(new Request(url,{method:'POST',headers:{'Content-Type':String(req.headers['content-type']||'')},body:text}),visitor));return;
-   }
    if(path==='/api/page-views'){await respond(await handlePageViews(req.method,req.headers['x-waterrules-view-id']));return;}
    if(!['GET','HEAD'].includes(req.method)){json({error:'Method not allowed'},405);return;}
-   if(path==='/api/health'){json({ok:true,services:['rainfall','regional-rainfall','page-views','issues']},200);return;}
+   if(path==='/api/laboratories'){await respond(await handleLaboratoryRegister(new Request(url)));return;}
+   if(path==='/api/health'){json({ok:true,services:['rainfall','regional-rainfall','laboratories']},200);return;}
    if(path==='/api/rainfall'||path==='/api/regional-rainfall'){await respond(await (path==='/api/rainfall'?handleRainfall:handleRegionalRainfall)(new Request(url)));return;}
    json({error:'Unknown data service.'},404);return;
   }
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{Allow:'GET, HEAD'});res.end();return;}
   if(path==='/')path='/index.html';
   // Only public files are served. Server code, mail settings and stored reports stay private.
-  if(!['/index.html','/styles.css','/script.js','/favicon.svg','/ads.txt'].includes(path)&&!/^\/(downloads|images|assets)\//.test(path)){res.writeHead(404);res.end('Not found');return;}
+  if(!['/index.html','/styles.css','/script.js','/favicon.svg','/share-water-rules.png','/share-water-rules.svg'].includes(path)&&!/^\/(downloads|images|assets)\//.test(path)&&!/^\/agentic\/(pdf\.worker\.min\.mjs|pdf-lib\.esm\.min\.js|DWQAR-2022-revised-2024\.pdf|pdf-lib-LICENSE\.txt)$/.test(path)){res.writeHead(404);res.end('Not found');return;}
   const filename=resolve(root,'.'+path);if(!filename.startsWith(resolve(root)+sep)){res.writeHead(403);res.end('Forbidden');return;}
   const data=await readFile(filename);res.writeHead(200,{'Content-Type':types[extname(filename)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:data);
  }catch{if(path.startsWith('/api/'))json({error:'The requested data service is unavailable. Please try again.'},500);else{res.writeHead(404);res.end('Not found');}}
