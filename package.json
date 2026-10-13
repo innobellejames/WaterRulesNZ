@@ -1,10 +1,10 @@
 {
-  "name": "waterrules-nz",
-  "version": "1.0.0",
+  "name": "waterrulesnz",
+  "version": "2026.10.13",
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "start": "node server.mjs"
