@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
-import {Share2,X} from 'lucide-react';
+import {Share2,Copy,ArrowUpRight,X} from 'lucide-react';
 import banner from './share-banner.json';
 import {photoShareData} from './share-file';
 export default function SharePage(){
@@ -13,7 +13,7 @@ export default function SharePage(){
   setBusy(true);setStatus('');
   try{
    if(typeof navigator.share==='function'){
-    await navigator.share(photoShareData(url)??{title:'Water Rules NZ',text:'Drinking water guidance. Official sources.',url});
+    await navigator.share(photoShareData(url)??{title:'WaterRules NZ | Drinking water guidance and learning',text:'An independent guide to New Zealand drinking water requirements, linked official sources, interactive lessons and planning tools.',url});
     setStatus('Shared successfully.');
    }else{
     await navigator.clipboard.writeText(url);
@@ -23,9 +23,9 @@ export default function SharePage(){
   finally{setBusy(false);}
  }
  return <div className="share-page"><button ref={trigger} className="share-toggle" onClick={show} aria-label="Share this page" aria-haspopup="dialog"><Share2 size={17}/><span>Share this page</span></button><dialog ref={dialog} className="share-dialog" aria-labelledby="share-title" onCancel={()=>setOpen(false)} onClose={()=>setOpen(false)} onClick={e=>{if(e.target===dialog.current){const rect=dialog.current.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)setOpen(false);}}}>
- <div className="share-dialog-heading"><div><small>PASS IT ON</small><h2 id="share-title">Share Water Rules NZ</h2></div><button aria-label="Close sharing" onClick={()=>setOpen(false)}><X size={20}/></button></div>
- <img className="share-preview" src={banner.image} alt="Water Rules NZ — a stream through Aotearoa"/>
- <div className="share-actions"><button className="share-device" disabled={busy} onClick={share}><Share2 size={18}/>Share this page</button></div>
+ <div className="share-dialog-heading"><div><small>SHARE A USEFUL RESOURCE</small><h2 id="share-title">Share WaterRules NZ</h2></div><button aria-label="Close sharing" onClick={()=>setOpen(false)}><X size={20}/></button></div>
+ <a className="share-preview-link" href={url} target="_blank" rel="noopener noreferrer" aria-label="Open the page shown in this sharing preview"><img className="share-preview" src={banner.image} alt="WaterRules NZ — understand New Zealand drinking water requirements, find official sources, explore lessons and planning tools"/><div className="share-preview-copy"><strong>Drinking water guidance for Aotearoa New Zealand</strong><p>Find linked official sources, explore interactive lessons and use practical planning tools.</p><small>Independent guidance and learning</small></div></a><p className="share-context">Share a link to the section you are viewing.</p>
+ <div className="share-actions"><button className="share-device" disabled={busy} onClick={share}><Share2 size={18}/>Share this page</button><button disabled={busy} onClick={async()=>{try{await navigator.clipboard.writeText(url);setStatus('Page link copied.');}catch{setStatus('Select and copy the page link below.');}}}><Copy size={16}/>Copy link</button><a href={url} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16}/>Open page</a></div><label className="share-link-label">Page link<input readOnly value={url} onFocus={e=>e.currentTarget.select()}/></label>
  {status&&<p role="status" aria-live="polite">{status}</p>}
  </dialog></div>;
 }
