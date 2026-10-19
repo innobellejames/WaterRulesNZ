@@ -1,0 +1,17 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {Share2} from 'lucide-react';
+type Quote={mi:string;en:string};
+export function quoteShareText(quote:Quote,source:string){return `${quote.mi}\n${quote.en}\n\nSource: Taumata Arowai · Drinking Water Quality Assurance Rules, p. 2\n${source}`;}
+export async function quoteCard(quote:Quote):Promise<Blob>{
+ const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;const ctx=canvas.getContext('2d');if(!ctx)throw Error('Image export unavailable');const c=ctx;c.fillStyle='#f7f7f2';c.fillRect(0,0,1200,1200);c.fillStyle='#173d3a';
+ function lines(text:string,font:string,y:number,lineHeight:number){c.font=font;let line='';for(const word of text.split(' ')){if(c.measureText(line+word).width>920&&line){c.fillText(line.trim(),140,y);y+=lineHeight;line='';}line+=word+' ';}c.fillText(line.trim(),140,y);return y+lineHeight;}
+ let y=lines('“'+quote.mi+'”','54px Georgia',360,82);y=lines(quote.en,'30px Arial',y+40,46);c.font='20px Arial';c.fillStyle='#526760';c.fillText('Taumata Arowai · Quality Assurance Rules · p. 2',140,1000);c.fillText('Shared from WaterRulesNZ',140,1040);
+ return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('Image export unavailable')),'image/png'));
+}
+export default function QuizQuoteShare({quote,source}:{quote:Quote;source:string}){
+ const [status,setStatus]=useState(''),[busy,setBusy]=useState(false),[file,setFile]=useState<File|null>(null);
+ useEffect(()=>{let active=true;setStatus('');setFile(null);quoteCard(quote).then(b=>{if(active)setFile(new File([b],'WaterRulesNZ-wai-thought.png',{type:'image/png'}));}).catch(()=>{});return()=>{active=false;};},[quote.mi,quote.en]);
+ async function share(){if(busy)return;const text=quoteShareText(quote,source);setBusy(true);setStatus('');try{if(navigator.share){const data:ShareData={title:'A thought about wai',text};if(file&&navigator.canShare?.({...data,files:[file]}))data.files=[file];await navigator.share(data);}else{await navigator.clipboard.writeText(text);setStatus('Quote and source link copied.');}}catch(e){if((e as Error).name!=='AbortError')setStatus('Sharing is unavailable here. You can copy the quote text above.');}finally{setBusy(false);}}
+ return <div className="quote-share-minimal"><button onClick={share} disabled={busy} aria-label="Share this quote"><Share2 size={15}/> Share quote</button>{status&&<span role="status">{status}</span>}</div>;
+}
