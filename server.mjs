@@ -35,6 +35,7 @@ createServer(async(req,res)=>{
    if(path==='/api/page-views'){await respond(await handlePageViews(req.method,req.headers['x-waterrules-view-id']));return;}
    if(!['GET','HEAD'].includes(req.method)){json({error:'Method not allowed'},405);return;}
    if(path==='/api/laboratories'){await respond(await handleLaboratoryRegister(new Request(url)));return;}
+   if(path==='/api/updates'){json(JSON.parse(await readFile(resolve(root,'updates.json'),'utf8')),200);return;}
    if(path==='/api/health'){json({ok:true,services:['rainfall','regional-rainfall','laboratories']},200);return;}
    if(path==='/api/rainfall'||path==='/api/regional-rainfall'){await respond(await (path==='/api/rainfall'?handleRainfall:handleRegionalRainfall)(new Request(url)));return;}
    json({error:'Unknown data service.'},404);return;
@@ -42,7 +43,7 @@ createServer(async(req,res)=>{
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{Allow:'GET, HEAD'});res.end();return;}
   if(path==='/')path='/index.html';
   // Only public files are served. Server code, mail settings and stored reports stay private.
-  if(!['/index.html','/styles.css','/script.js','/favicon.svg','/share-water-rules.png','/share-water-rules.svg'].includes(path)&&!/^\/(downloads|images|assets)\//.test(path)&&!/^\/agentic\/(pdf\.worker\.min\.mjs|pdf-lib\.esm\.min\.js|DWQAR-2022-revised-2024\.pdf|pdf-lib-LICENSE\.txt)$/.test(path)){res.writeHead(404);res.end('Not found');return;}
+  if(!['/index.html','/styles.css','/script.js','/favicon.svg','/share-water-rules.png','/share-water-rules.svg','/updates.json'].includes(path)&&!/^\/(downloads|images|assets)\//.test(path)&&!/^\/agentic\/(pdf\.worker\.min\.mjs|pdf-lib\.esm\.min\.js|DWQAR-2022-revised-2024\.pdf|pdf-lib-LICENSE\.txt)$/.test(path)){res.writeHead(404);res.end('Not found');return;}
   const filename=resolve(root,'.'+path);if(!filename.startsWith(resolve(root)+sep)){res.writeHead(403);res.end('Forbidden');return;}
   const data=await readFile(filename);res.writeHead(200,{'Content-Type':types[extname(filename)]||'application/octet-stream','X-Content-Type-Options':'nosniff','Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:data);
  }catch{if(path.startsWith('/api/'))json({error:'The requested data service is unavailable. Please try again.'},500);else{res.writeHead(404);res.end('Not found');}}
