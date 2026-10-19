@@ -20,7 +20,7 @@ export async function buildLearningRecordPDF(name:string,attempt:LearningAttempt
  // Draw the watermark underneath all record fields so the result stays readable.
  page.drawText('WATERRULES NZ',{x:185,y:270,size:49,font:bold,color:teal,rotate:degrees(22),opacity:.075});
  const watermarkDate=new Intl.DateTimeFormat('en-NZ',{day:'2-digit',month:'short',year:'numeric',timeZone:'Pacific/Auckland'}).format(new Date(attempt.submittedAt));
- page.drawText(`SELF-ASSESSED · ${attempt.score}/30 · ${watermarkDate} · ${attempt.id.slice(0,12)}`,{x:192,y:246,size:10,font,color:teal,rotate:degrees(22),opacity:.18});
+ page.drawText(`SELF-ASSESSED · ${attempt.score}/30 · ${watermarkDate} · https://waterrulesnz.com/`,{x:192,y:246,size:10,font,color:teal,rotate:degrees(22),opacity:.18});
  page.drawRectangle({x:0,y:583,width:842,height:12,color:teal});
  // The site's own droplet logo, without a seal or accreditation emblem.
  page.drawRectangle({x:48,y:513,width:40,height:40,color:teal});
@@ -52,7 +52,7 @@ export async function buildLearningRecordPDF(name:string,attempt:LearningAttempt
  paragraph('This records a browser-calculated introductory quiz result. Identity, supervision, workplace competence and regulatory compliance have not been verified.');
  paragraph('Not an NZQA qualification, qualification credit, professional accreditation or operator authorisation. Not issued or endorsed by NZQA, Water New Zealand, any other training provider or a regulator.');
  text('Content version: '+attempt.contentVersion+' · Browser-reported attempt time: '+attempt.submittedAt,margin,76,8,font,muted);
- text('Local attempt reference: '+attempt.id+' · No public verification register',margin,63,8,font,muted);
+ text('Website: https://waterrulesnz.com/ · No public verification register',margin,63,8,font,muted);
  page.drawLine({start:{x:margin,y:49},end:{x:794,y:49},thickness:.7,color:line});
  text('Issued by WaterRulesNZ',margin,31,8.5,bold,teal);text('waterrulesnz.com',650,31,9,font,teal);
  return doc.save();
