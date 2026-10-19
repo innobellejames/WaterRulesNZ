@@ -7,7 +7,7 @@ export default function SharePage(){
  const [open,setOpen]=useState(false),[status,setStatus]=useState(''),[url,setUrl]=useState(''),[busy,setBusy]=useState(false);
  const dialog=useRef<HTMLDialogElement>(null),trigger=useRef<HTMLButtonElement>(null);
  useEffect(()=>{if(open){dialog.current?.showModal();}else if(dialog.current?.open){dialog.current.close();trigger.current?.focus();}},[open]);
- function show(){setUrl(window.location.href);setStatus('');setOpen(true);}
+ function show(){setUrl(new URL(window.location.hash,'https://waterrulesnz.com/').href);setStatus('');setOpen(true);}
  async function share(){
   if(busy)return;
   setBusy(true);setStatus('');
