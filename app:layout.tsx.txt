@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "WaterRules NZ | Drinking water supplier requirements",
+  description: "Explore New Zealand drinking water supplier requirements with linked official sources.",
+
+  metadataBase: new URL('https://waterrulesnz.com'),
+  openGraph: {title:'Drinking water guidance and learning | WaterRules NZ',description:'Independent guidance on New Zealand drinking water requirements, linked official sources, interactive lessons and planning tools.',url:'https://waterrulesnz.com/',type:'website',images:[{url:'/share-water-rules.png?v=20261019-2',type:'image/png',width:1200,height:630,alt:'WaterRules NZ — New Zealand drinking water guidance, official sources and learning'}]},
+  twitter: {card:'summary_large_image',title:'Water Rules NZ',images:['/share-water-rules.png?v=20261019-2']},
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+
+      <body className="antialiased"><script dangerouslySetInnerHTML={{__html:'try{var t=localStorage.getItem("waterrules-theme");document.documentElement.dataset.theme=(t==="dark"||t==="light")?t:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}catch{}'}}/>{children}</body>
+    </html>
+  );
+}
