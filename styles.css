@@ -74,30 +74,46 @@
 /* ==========================================================================
    Rule Overlaps page (October 2026)
    ========================================================================== */
-.overlaps-page .ovl-core{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0 26px}
-.overlaps-page .ovl-regime{border:1px solid var(--line);background:var(--surface,#fff);border-radius:10px;padding:16px 18px}
-.overlaps-page .ovl-regime h3{margin:0 0 10px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--teal)}
+.overlaps-page{--ovl-ws:#1f6fb2;--ovl-fd:#b25b12;--ovl-cg:#2d7a3e}
+:root[data-theme=dark] .overlaps-page{--ovl-ws:#8cc4f2;--ovl-fd:#f2b27a;--ovl-cg:#93d6a1}
+.overlaps-page .lead{max-width:62ch}
+.overlaps-page .ovl-core{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:22px 0 14px}
+.overlaps-page .ovl-regime{border:1px solid var(--line);border-top:4px solid var(--ovl-c,var(--teal));background:var(--surface,#fff);border-radius:10px;padding:16px 18px}
+.overlaps-page .ovl-WS{--ovl-c:var(--ovl-ws)}.overlaps-page .ovl-FD{--ovl-c:var(--ovl-fd)}.overlaps-page .ovl-CG{--ovl-c:var(--ovl-cg)}
+.overlaps-page .ovl-rhead{margin-bottom:12px}
+.overlaps-page .ovl-rhead h3{margin:0;font-size:17px;color:var(--ovl-c)}
+.overlaps-page .ovl-rhead p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+.overlaps-page .ovl-rhead b{color:var(--ink);font-weight:700}
 .overlaps-page .ovl-quote{margin:0 0 14px}
 .overlaps-page .ovl-quote:last-child{margin-bottom:0}
-.overlaps-page .ovl-quote blockquote{margin:0;padding:0 0 0 12px;border-left:3px solid var(--line);white-space:pre-line;line-height:1.55;color:var(--body,var(--ink))}
-.overlaps-page .ovl-quote figcaption{margin-top:6px;font-size:12.5px;padding-left:15px}
+.overlaps-page .ovl-quote blockquote{margin:0;padding:2px 0 2px 14px;border-left:3px solid var(--ovl-c,var(--line));white-space:pre-line;font-size:15.5px;line-height:1.6;color:var(--body,var(--ink))}
+.overlaps-page .ovl-quote figcaption{margin-top:6px;font-size:12.5px;padding-left:17px}
 .overlaps-page .ovl-quote figcaption a{color:var(--teal);font-weight:700;text-decoration:underline;text-underline-offset:2px}
-.overlaps-page h2.ovl-h{margin:30px 0 6px;font-size:22px}
-.overlaps-page .ovl-together{border:1px dashed var(--teal);border-radius:10px;padding:16px 18px;margin:12px 0 8px;background:var(--surface,#fff)}
-.overlaps-page .ovl-together>p{margin:12px 0 0;font-weight:600}
+.overlaps-page details>summary{cursor:pointer}
+.overlaps-page .ovl-more{margin-top:12px}
+.overlaps-page .ovl-more>summary{font-size:13px;font-weight:700;color:var(--teal);margin-bottom:10px}
+.overlaps-page .ovl-together{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:0 0 8px;background:var(--surface,#fff)}
+.overlaps-page .ovl-together>summary{font-weight:700;color:var(--ink)}
+.overlaps-page .ovl-together>p{margin:12px 0}
+.overlaps-page .ovl-together .ovl-ask{font-weight:600;margin-bottom:0}
+.overlaps-page h2.ovl-h{margin:34px 0 4px;font-size:24px}
+.overlaps-page .ovl-hint{margin:0;color:var(--muted)}
 .overlaps-page .ovl-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .overlaps-page details.ovl-scenario{border:1px solid var(--line);background:var(--surface,#fff);border-radius:10px}
-.overlaps-page details.ovl-scenario>summary{cursor:pointer;list-style:none;padding:16px 18px;display:flex;gap:12px;align-items:baseline}
+.overlaps-page details.ovl-scenario[open]{border-color:var(--teal)}
+.overlaps-page details.ovl-scenario>summary{list-style:none;padding:15px 18px;display:flex;gap:12px;align-items:flex-start}
 .overlaps-page details.ovl-scenario>summary::-webkit-details-marker{display:none}
-.overlaps-page details.ovl-scenario>summary::before{content:"+";font-weight:800;color:var(--teal);width:14px;flex:none}
+.overlaps-page details.ovl-scenario>summary::before{content:"+";font-weight:800;font-size:18px;line-height:1.2;color:var(--teal);width:14px;flex:none}
 .overlaps-page details.ovl-scenario[open]>summary::before{content:"–"}
-.overlaps-page details.ovl-scenario>summary small{display:block;color:var(--muted);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
-.overlaps-page details.ovl-scenario>summary strong{font-size:16.5px;color:var(--ink)}
+.overlaps-page details.ovl-scenario>summary strong{display:block;font-size:16.5px;color:var(--ink);line-height:1.35}
+.overlaps-page .ovl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.overlaps-page .ovl-tag{font-style:normal;font-size:11.5px;font-weight:700;border-radius:12px;padding:2px 9px;border:1px solid var(--ovl-c);color:var(--ovl-c)}
 .overlaps-page .ovl-body{padding:0 18px 18px 44px}
-.overlaps-page .ovl-situation{margin:0 0 14px;font-style:italic;color:var(--muted)}
+.overlaps-page .ovl-situation{margin:0 0 14px;color:var(--muted)}
 .overlaps-page .ovl-body .ovl-regime{margin-bottom:12px}
-.overlaps-page .ovl-check{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.overlaps-page .ovl-body h4{margin:18px 0 0;font-size:14px}
+.overlaps-page .ovl-check{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
 .overlaps-page .ovl-check a,.overlaps-page .ovl-check button{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:18px;padding:7px 12px;font-size:12.5px;font-weight:700;color:var(--teal);background:transparent;text-decoration:none;cursor:pointer}
 .overlaps-page .ovl-check a:hover,.overlaps-page .ovl-check button:hover{border-color:var(--teal)}
 .overlaps-page .ovl-meta{font-size:12.5px;color:var(--muted);margin-top:22px}
-@media (max-width:640px){.overlaps-page .ovl-body{padding:0 14px 16px}}
+@media (max-width:640px){.overlaps-page .ovl-body{padding:0 14px 16px}.overlaps-page .ovl-quote blockquote{font-size:15px}}
