@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://waterrulesnz.com/sitemap.xml
