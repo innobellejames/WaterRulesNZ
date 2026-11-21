@@ -117,3 +117,24 @@
 .overlaps-page .ovl-check a:hover,.overlaps-page .ovl-check button:hover{border-color:var(--teal)}
 .overlaps-page .ovl-meta{font-size:12.5px;color:var(--muted);margin-top:22px}
 @media (max-width:640px){.overlaps-page .ovl-body{padding:0 14px 16px}.overlaps-page .ovl-quote blockquote{font-size:15px}}
+
+/* ==========================================================================
+   Cookie choice and page feedback (November 2026)
+   ========================================================================== */
+.wr-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:1000;max-width:720px;margin:0 auto;background:var(--surface,#fff);color:var(--ink,#1b2b2a);border:1px solid var(--line,#d6dedd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:16px 18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.wr-consent p{margin:0;flex:1 1 320px;font-size:14px;line-height:1.5}
+.wr-consent a{color:var(--teal,#0f6b63);font-weight:700;text-decoration:underline}
+.wr-consent-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wr-btn{border:1px solid var(--line,#d6dedd);background:transparent;color:var(--ink,#1b2b2a);border-radius:20px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.wr-btn:hover{border-color:var(--teal,#0f6b63)}
+.wr-btn-main{background:var(--teal,#0f6b63);border-color:var(--teal,#0f6b63);color:#fff}
+.wr-feedback{position:fixed;right:16px;bottom:16px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.wr-feedback-toggle{border:1px solid var(--line,#d6dedd);background:var(--surface,#fff);color:var(--teal,#0f6b63);border-radius:20px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.wr-feedback-panel{width:240px;background:var(--surface,#fff);color:var(--ink,#1b2b2a);border:1px solid var(--line,#d6dedd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:14px}
+.wr-feedback-panel[hidden]{display:none}
+.wr-fb-q{margin:0 0 10px;font-weight:700;font-size:14px}
+.wr-fb-link{display:block;margin-top:12px;font-size:13px;font-weight:700;color:var(--teal,#0f6b63);text-decoration:underline}
+.wr-fb-small{display:block;margin-top:10px;padding:0;border:0;background:none;color:var(--muted,#5b6b6a);font-size:12px;text-decoration:underline;cursor:pointer}
+.wr-consent ~ .wr-feedback{display:none}
+@media (max-width:640px){.wr-consent{bottom:8px;left:8px;right:8px}.wr-feedback{right:10px;bottom:10px}}
+:root[data-theme=dark] .wr-btn-main{color:#0b1f1d}

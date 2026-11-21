@@ -1,0 +1,68 @@
+WaterRules NZ - visitor numbers, searches and feedback (22 November 2026)
+=========================================================================
+
+WHAT THIS ADDS
+- Visitor numbers: Google Analytics, with a cookie notice (Accept / Decline).
+  Cookies are only set if a visitor accepts.
+- What people search for: the words typed into Ask Water, the Word Bank search,
+  the menu's "Find a section" and the Guide's "Find a task" are sent to Google
+  Analytics as "search" events, shortened to 100 characters, with email
+  addresses and long numbers removed.
+- User feedback: a small "Feedback" button (bottom right) asks "Was this page
+  helpful? Yes / No" and links to your Google Form.
+- Terms of Use, section 5, now explains all of this.
+Nothing shows on the site until you fill in site-config.json (step 4).
+
+FILES (all at the top level of the repo, no folders)
+- Changed: script.js, styles.css, terms.html
+- New: site-config.json
+
+STEP 1 - upload
+On github.com: Add file > Upload files > drag the 4 files > Commit changes.
+
+STEP 2 - create Google Analytics (about 10 minutes)
+1. Go to analytics.google.com and sign in with your Google account.
+2. Admin > Create > Property. Name: WaterRules NZ. Time zone: New Zealand.
+   Currency: NZD. Answer the business questions and click Create.
+3. Choose platform "Web". Website URL: waterrulesnz.com. Stream name: WaterRules NZ.
+   Click Create stream.
+4. Copy the Measurement ID. It starts with G- (for example G-AB12CD34EF).
+
+STEP 3 - let Analytics show the search words
+In Google Analytics: Admin > Data display > Custom definitions > Create custom dimension.
+- Dimension name: Search term. Scope: Event. Event parameter: search_term. Save.
+- Create a second one: Dimension name: Search area. Scope: Event. Event parameter: search_area. Save.
+Do this straight away: words are only shown from the day you create these.
+
+STEP 4 - create the feedback form
+1. Go to forms.google.com > Blank form. Title: WaterRules NZ feedback.
+2. Suggested questions:
+   - Which page were you on? (short answer)
+   - What were you looking for? (paragraph)
+   - Did you find it? (Yes / Partly / No)
+   - Anything wrong, out of date or missing? (paragraph)
+   - Your email, only if you'd like a reply (short answer, optional)
+   - May we quote your feedback, without your name? (Yes / No)
+3. Click Send > the link icon > tick "Shorten URL" > Copy.
+   Answers appear under Responses (you can link them to a Google Sheet).
+
+STEP 5 - switch it on
+1. In your repo on github.com, click site-config.json, then the pencil (Edit) icon.
+2. Paste your two values between the quotation marks, for example:
+   {
+     "googleAnalyticsId": "G-AB12CD34EF",
+     "feedbackFormUrl": "https://forms.gle/abc123"
+   }
+3. Commit changes. After 1-2 minutes, visit waterrulesnz.com: the cookie notice
+   and the Feedback button appear.
+
+WHERE TO SEE THE NUMBERS
+- Visitors: Google Analytics > Reports > Realtime (now) and Reports > Engagement > Pages and screens.
+- Searches on the site: Reports > Engagement > Events > search; or Explore >
+  Free form with the "Search term" and "Search area" dimensions.
+- Helpful votes: Reports > Engagement > Events > feedback_helpful and feedback_not_helpful.
+- Written feedback: your Google Form > Responses.
+- What people search for on Google before finding the site: Google Search Console
+  (see the promotion pack).
+
+TO SWITCH OFF: empty either value in site-config.json and commit.
