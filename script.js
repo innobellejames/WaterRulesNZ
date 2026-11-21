@@ -304,7 +304,7 @@ function WRagent(e,t,n){let WRdef=WRdefinitions(e);let r=WRterms(e),i=e.toLowerC
 function SOe({result:e,supply:t,onOpenCouncils:n,onFollowUp:r}){let[i,a]=(0,T.useState)(``),o=WRagent(e.query,t,e.found),s=e.found.slice(0,4).map((t,n)=>({topic:`Relevant passage ${n+1}`,answer:J9(t,e.query),reference:`${t.title} · p. ${t.page}`,url:t.url})),c=_e(e.query),l=c?{topic:`Local council website`,answer:`${c.name}’s official website may have local water service information and notices. Confirm the operator for your supply.`,reference:`${c.name} · water page`,url:A9[c.name]||c.url}:null,u=!c&&/council|local authorit/i.test(e.query)?{topic:`Find a council`,answer:`Search the council directory by name, island or type. Check the council website for local water services and notices.`,reference:`LGNZ · council websites directory`,url:K}:null,d=o.rows;return(0,q.jsxs)(`section`,{className:`results`,"aria-live":`polite`,children:[(0,q.jsx)(`p`,{className:`eyebrow`,children:`YOUR QUESTION`}),(0,q.jsx)(`h2`,{children:e.q}),e.trail.length>0&&(0,q.jsxs)(`div`,{className:`question-trail`,children:[(0,q.jsx)(`strong`,{children:`Earlier questions`}),(0,q.jsx)(`ol`,{children:e.trail.map((e,t)=>(0,q.jsx)(`li`,{children:e},`${t}-${e}`))}),(0,q.jsx)(`p`,{children:`Short follow-ups reuse the previous topic for source matching. If this answer does not address your new angle, restate the question with the needed supply details.`})]}),d.length?(0,q.jsxs)(q.Fragment,{children:[(0,q.jsxs)(`div`,{className:`answer-summary`,children:[(0,q.jsx)(`strong`,{children:`Source agent`}),(0,q.jsx)(`p`,{children:o?.summary||(c?`Open the council website for local information. This site has not checked that council’s current water notices or determined who operates your supply.`:u?`Browse the council directory to find an official local website. National drinking water obligations remain in the Act, Standards and Taumata Arowai instruments.`:`I cannot establish a reliable answer from the indexed passages alone. Use them as leads, check your supply context, and ask Taumata Arowai for clarification where guidance is unclear.`)})]}),(0,q.jsxs)(`div`,{className:`result-heading`,children:[(0,q.jsx)(`h3`,{children:`Requirements overview`}),(0,q.jsxs)(`span`,{children:[d.length,` referenced points`]})]}),(0,q.jsx)(`div`,{className:`table-scroll`,children:(0,q.jsxs)(`table`,{className:`overview-table`,children:[(0,q.jsx)(`thead`,{children:(0,q.jsxs)(`tr`,{children:[(0,q.jsx)(`th`,{scope:`col`,children:`Topic`}),(0,q.jsx)(`th`,{scope:`col`,children:`Answer / requirement`}),(0,q.jsx)(`th`,{scope:`col`,children:`Source or reference`})]})}),(0,q.jsx)(`tbody`,{children:d.map((e,t)=>(0,q.jsxs)(`tr`,{children:[(0,q.jsx)(`th`,{scope:`row`,children:e.topic}),(0,q.jsx)(`td`,{children:e.answer}),(0,q.jsx)(`td`,{children:(0,q.jsxs)(`a`,{href:e.url,target:`_blank`,rel:`noreferrer`,children:[e.reference,` `,(0,q.jsx)(V,{size:14})]})})]},`${e.reference}-${t}`))})]})}),(c||/council|local authority/i.test(e.query))&&(0,q.jsx)(`p`,{className:`council-result-link`,children:(0,q.jsx)(`button`,{onClick:n,children:`Browse all 78 council websites`})}),(0,q.jsxs)(`p`,{className:`scope-note`,children:[o?.scope||Y9(e.query,t),` Act citations open the current Act on New Zealand Legislation. If that site presents an access challenge, the `,(0,q.jsx)(`a`,{href:`https://www.taumataarowai.govt.nz/about-us/legislation`,target:`_blank`,rel:`noreferrer`,children:`regulator’s legislation directory`}),` lists the Act and Standards. If the sources do not resolve your situation, `,(0,q.jsx)(`a`,{href:`https://www.taumataarowai.govt.nz/contact-us`,target:`_blank`,rel:`noreferrer`,children:`ask Taumata Arowai for clarification`}),`.`]}),e.found.length>0&&(0,q.jsxs)(`details`,{className:`source-detail`,children:[(0,q.jsxs)(`summary`,{children:[`Show matched passages (`,e.found.length,`)`]}),e.found.map((t,n)=>(0,q.jsxs)(`article`,{className:`passage`,children:[(0,q.jsx)(`span`,{className:`index`,children:String(n+1).padStart(2,`0`)}),(0,q.jsxs)(`div`,{children:[(0,q.jsxs)(`strong`,{children:[t.title,` · p. `,t.page]}),(0,q.jsx)(`p`,{children:J9(t,e.query)}),(0,q.jsxs)(`a`,{href:t.url,target:`_blank`,rel:`noreferrer`,children:[`Read official source `,(0,q.jsx)(V,{size:14})]})]})]},`${t.title}-${t.page}-${n}`))]})]}):(0,q.jsxs)(`div`,{className:`empty`,children:[`I could not find a reliable match in the indexed documents. Add your supply type, population, source and treatment details, or open the source library. The Act and Standards are linked there but are not searched in this version. For a supplier-specific requirement the site cannot resolve, `,(0,q.jsx)(`a`,{href:`https://www.taumataarowai.govt.nz/contact-us`,target:`_blank`,rel:`noreferrer`,children:`contact Taumata Arowai for clarification`}),`.`]}),(0,q.jsxs)(`form`,{className:`follow-up`,onSubmit:t=>{t.preventDefault(),i.trim()&&(r(i,e),a(``))},children:[(0,q.jsx)(`label`,{htmlFor:`follow-up-question`,children:`Ask a follow-up`}),(0,q.jsx)(`p`,{children:`Keep the earlier topic in view. Add your supply type, source or location if it changes what applies.`}),(0,q.jsxs)(`div`,{children:[(0,q.jsx)(`input`,{id:`follow-up-question`,value:i,onChange:e=>a(e.target.value),placeholder:`For our supply, what about…?`}),(0,q.jsx)(`button`,{type:`submit`,disabled:!i.trim(),children:`Ask follow-up`})]})]}),(0,q.jsxs)(`p`,{className:`caution`,children:[`For possible unsafe water, follow your response plan and the regulator’s `,(0,q.jsx)(`a`,{href:`https://www.taumataarowai.govt.nz/drinking-water-suppliers-and-operators/notify-us`,target:`_blank`,rel:`noreferrer`,children:`notification guidance`}),` immediately.`]})]})}var $9=document.getElementById(`root`);if(!$9)throw Error(`WaterRules NZ root element is missing`);(0,G.createRoot)($9).render((0,q.jsx)(xOe,{}))})();
 ;/* WaterRules NZ extras: Google Analytics (with cookie choice), search counting and page feedback.
    Settings live in /site-config.json:
-   {"googleAnalyticsId": "G-XXXXXXXXXX", "feedbackFormUrl": "https://forms.gle/..."}
+   {"googleAnalyticsId": "G-XXXXXXXXXX", "googleTagManagerId": "GTM-XXXXXXX", "feedbackFormUrl": "https://forms.gle/..."}
    Leave a value empty to switch that part off. */
 (function(){
   if (window.__wrExtras) return; window.__wrExtras = 1;
@@ -313,18 +313,24 @@ function SOe({result:e,supply:t,onOpenCouncils:n,onFollowUp:r}){let[i,a]=(0,T.us
   function set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
   function el(tag, attrs, kids){ var n=document.createElement(tag); for (var a in attrs||{}) { if (a==='text') n.textContent=attrs[a]; else n.setAttribute(a, attrs[a]); } (kids||[]).forEach(function(k){ n.appendChild(k); }); return n; }
   function clean(t){ return String(t||'').replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g,'[email removed]').replace(/(\+?\d[\d\s-]{5,}\d)/g,'[number removed]').replace(/\s+/g,' ').trim().slice(0,100); }
-  var cfg = {}, gaOn = false;
-  function track(name, params){ if (gaOn && window.gtag) window.gtag('event', name, params||{}); }
+  var cfg = {}, gaOn = false, usesGTM = false;
+  function track(name, params){ if (!gaOn || !window.gtag) return; window.gtag('event', name, params||{}); if (usesGTM) { var d = { event: 'wr_' + name }; for (var k in params||{}) d[k] = params[k]; window.dataLayer.push(d); } }
 
-  function startGA(id){
+  function startGA(gaId, gtmId){
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments); };
     var choice = get(KEY);
     window.gtag('consent', 'default', { analytics_storage: choice === 'granted' ? 'granted' : 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
     window.gtag('js', new Date());
-    window.gtag('config', id);
-    var s = el('script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id) });
-    document.head.appendChild(s);
+    if (gaId) {
+      window.gtag('config', gaId);
+      document.head.appendChild(el('script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId) }));
+    }
+    if (gtmId) {
+      usesGTM = true;
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      document.head.appendChild(el('script', { async: '', src: 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(gtmId) }));
+    }
     gaOn = true;
     if (!choice) showNotice();
   }
@@ -382,8 +388,9 @@ function SOe({result:e,supply:t,onOpenCouncils:n,onFollowUp:r}){let[i,a]=(0,T.us
 
   fetch('/site-config.json', { cache: 'no-cache' }).then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; }).then(function(c){
     cfg = c || {};
-    var id = String(cfg.googleAnalyticsId || '').trim();
-    if (/^G-[A-Z0-9]+$/i.test(id)) startGA(id);
+    var id = String(cfg.googleAnalyticsId || '').trim(), tm = String(cfg.googleTagManagerId || '').trim();
+    id = /^G-[A-Z0-9]+$/i.test(id) ? id : ''; tm = /^GTM-[A-Z0-9]+$/i.test(tm) ? tm : '';
+    if (id || tm) startGA(id, tm);
     if (gaOn || cfg.feedbackFormUrl) feedbackWidget();
   });
 })();
